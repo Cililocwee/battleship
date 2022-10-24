@@ -53,10 +53,10 @@ function Board() {
 
   this.recieveAttack = function (coords, model) {
     // if the coords aren't in the hitList
-    if (this.hitList.battleship.length === 0) {
-      if (this.occupiedList.battleship[0].toString() === coords.toString()) {
+    if (this.hitList[model].length === 0) {
+      if (this.occupiedList[model][0].toString() === coords.toString()) {
         //hit
-        this.hitList.battleship.push(coords);
+        this.hitList[model].push(coords);
         console.log(this.hitList);
         return true;
       } else {
