@@ -51,9 +51,6 @@ function Board() {
     this.occupiedList[model] = coords;
   };
 
-  // Problems:
-  // X 1. only testing if the array is empty or not
-  // 2. this is only testing the first index
   this.recieveAttack = function (coords, model) {
     // check hit list
     for (model in this.hitList) {
@@ -64,25 +61,27 @@ function Board() {
         }
       }
     }
-    // if coords hit list, return false (no rehits)
 
+    /* There's an error in this loop. In the first go through, it is correctly finding the 
+    coords in occupiedlist. However it won't incriment up. The second loop won't acknowledge that
+    i should = 1 and won't check occupiedList[1] */
     // check occupied list
     for (model in this.occupiedList) {
       for (let i = 0; i < this.occupiedList[model].length; i++) {
+        console.log(this.occupiedList[model]);
         if (this.occupiedList[model][i].toString() === coords.toString()) {
           // HIT
           this.hitList[model].push(coords);
-          console.log(this.hitList);
+          // console.log(this.hitList);
+          console.log("blip");
           return true;
         } else {
           // MISS
+          console.log("bloop");
           return false;
         }
       }
     }
-    // if coords in occupied list, return true and push to hitlist
-
-    // if coords not in occupied list, return false
 
     // if (this.hitList[model].length < this.occupiedList[model].length) {
     //   for (let i = 0; i < this.occupiedList[model].length; i++) {

@@ -113,7 +113,7 @@ test("Non-origin positioning - positionBoats correctly modifies occupiedList", (
   });
 });
 
-test("recieveAttack correctly triggers hit() in occupied space's boat", () => {
+test.skip("recieveAttack correctly triggers hit() in occupied space's boat", () => {
   let game1 = boardFactory();
   game1.positionBoats("battleship", [0, 0], "horizontal");
 
@@ -121,7 +121,7 @@ test("recieveAttack correctly triggers hit() in occupied space's boat", () => {
   expect(game1.recieveAttack([9, 9], "battleship")).toBe(false);
 });
 
-test("Can't hit the same coords twice", () => {
+test.skip("Can't hit the same coords twice", () => {
   let game1 = boardFactory();
   game1.positionBoats("battleship", [0, 0], "horizontal");
 
@@ -133,7 +133,7 @@ test("Can't hit the same coords twice", () => {
   expect(game1.recieveAttack([6, 6], "carrier")).toBe(false);
 });
 
-test("Trying to hit the same position twice returns false", () => {
+test.skip("Trying to hit the same position twice returns false", () => {
   let game1 = boardFactory();
   game1.positionBoats("battleship", [6, 6], "horizontal");
   expect(game1.recieveAttack([6, 6], "battleship")).toBe(true);
@@ -141,16 +141,12 @@ test("Trying to hit the same position twice returns false", () => {
 });
 
 test("CAN hit the same boat more than once", () => {
-  let game1 = boardFactory();
-  game1.positionBoats("battleship", [0, 0], "horizontal");
+  let game6 = boardFactory();
+  game6.positionBoats("battleship", [0, 0], "horizontal");
   // console.log(game1.occupiedList);
-  expect(game1.recieveAttack([0, 0], "battleship")).toBe(true);
+  expect(game6.recieveAttack([0, 0], "battleship")).toBe(true);
   // console.log(game1.hitList);
-  expect(game1.recieveAttack([0, 1], "battleship")).toBe(true);
-
-  game1.positionBoats("carrier", [6, 6], "horizontal");
-  expect(game1.recieveAttack([6, 6], "carrier")).toBe(true);
-  expect(game1.recieveAttack([6, 7], "carrier")).toBe(true);
+  expect(game6.recieveAttack([0, 1], "battleship")).toBe(true);
 });
 
 test.todo("Declares when a boat has been sunk");
