@@ -65,7 +65,7 @@ test("Carrier-horizontal: positionBoats correctly modifies occupiedList", () => 
   });
 });
 
-test("Battleship-horizontal: positionBoats correctly modifies occupiedList", () => {
+test("Horizontal: positionBoats correctly modifies occupiedList", () => {
   let game1 = boardFactory();
   game1.positionBoats("battleship", [0, 0], "horizontal");
   expect(game1.occupiedList).toEqual({
@@ -79,6 +79,37 @@ test("Battleship-horizontal: positionBoats correctly modifies occupiedList", () 
     destroyer: [],
     submarine: [],
     patrolboat: [],
+  });
+});
+
+test("Non-origin positioning - positionBoats correctly modifies occupiedList", () => {
+  let game1 = boardFactory();
+  game1.positionBoats("patrolboat", [0, 4], "horizontal");
+  expect(game1.occupiedList).toEqual({
+    carrier: [],
+    battleship: [],
+    destroyer: [],
+    submarine: [],
+    patrolboat: [
+      [0, 4],
+      [0, 5],
+    ],
+  });
+  game1.positionBoats("battleship", [4, 4], "vertical");
+  expect(game1.occupiedList).toEqual({
+    carrier: [],
+    battleship: [
+      [4, 4],
+      [5, 4],
+      [6, 4],
+      [7, 4],
+    ],
+    destroyer: [],
+    submarine: [],
+    patrolboat: [
+      [0, 4],
+      [0, 5],
+    ],
   });
 });
 
@@ -96,7 +127,20 @@ test("Can't hit the same coords twice", () => {
 
   expect(game1.recieveAttack([0, 0], "battleship")).toBe(true);
   expect(game1.recieveAttack([0, 0], "battleship")).toBe(false);
+
+  game1.positionBoats("carrier", [6, 6], "horizontal");
+  expect(game1.recieveAttack([6, 6], "carrier")).toBe(true);
+  expect(game1.recieveAttack([6, 6], "carrier")).toBe(false);
 });
+
+test("Trying to hit the same position twice returns false", () => {
+  let game1 = boardFactory();
+  game1.positionBoats("battleship", [6, 6], "horizontal");
+  expect(game1.recieveAttack([6, 6], "battleship")).toBe(true);
+  expect(game1.recieveAttack([6, 6], "battleship")).toBe(false);
+});
+
+test.todo("CAN hit the same boat more than once");
 
 test.todo("Declares when a boat has been sunk");
 

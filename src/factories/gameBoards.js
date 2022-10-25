@@ -38,12 +38,12 @@ function Board() {
     }
 
     if (orientation === "vertical") {
-      for (let i = 0; i < size; i++) {
+      for (let i = bow[1]; i < size + bow[1]; i++) {
         coords.push([i, bow[0]]);
       }
     }
     if (orientation === "horizontal") {
-      for (let i = 0; i < size; i++) {
+      for (let i = bow[1]; i < size + bow[1]; i++) {
         coords.push([bow[0], i]);
       }
     }
@@ -52,20 +52,17 @@ function Board() {
   };
 
   this.recieveAttack = function (coords, model) {
-    // if the coords aren't in the hitList
     if (this.hitList[model].length === 0) {
       if (this.occupiedList[model][0].toString() === coords.toString()) {
-        //hit
+        // HIT -- to call hit()
         this.hitList[model].push(coords);
-        console.log(this.hitList);
         return true;
       } else {
-        // miss
+        // MISS
         return false;
       }
     } else {
-      // if the coords ARE in the hitlist
-      // no re-hits
+      // NO REHITS
       return false;
     }
   };
@@ -74,8 +71,5 @@ function Board() {
 function boardFactory() {
   return new Board();
 }
-
-// let game1 = boardFactory();
-// game1.positionBoats("carrier", [0, 0], "horizontal");
 
 export default boardFactory;
