@@ -140,8 +140,17 @@ test("Trying to hit the same position twice returns false", () => {
   expect(game1.recieveAttack([6, 6], "battleship")).toBe(false);
 });
 
-test.todo("CAN hit the same boat more than once");
+test("CAN hit the same boat more than once", () => {
+  let game1 = boardFactory();
+  game1.positionBoats("battleship", [0, 0], "horizontal");
+  // console.log(game1.occupiedList);
+  expect(game1.recieveAttack([0, 0], "battleship")).toBe(true);
+  // console.log(game1.hitList);
+  expect(game1.recieveAttack([0, 1], "battleship")).toBe(true);
+
+  game1.positionBoats("carrier", [6, 6], "horizontal");
+  expect(game1.recieveAttack([6, 6], "carrier")).toBe(true);
+  expect(game1.recieveAttack([6, 7], "carrier")).toBe(true);
+});
 
 test.todo("Declares when a boat has been sunk");
-
-test.todo("Declares when the game is over");

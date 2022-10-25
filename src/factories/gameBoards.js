@@ -51,20 +51,58 @@ function Board() {
     this.occupiedList[model] = coords;
   };
 
+  // Problems:
+  // X 1. only testing if the array is empty or not
+  // 2. this is only testing the first index
   this.recieveAttack = function (coords, model) {
-    if (this.hitList[model].length === 0) {
-      if (this.occupiedList[model][0].toString() === coords.toString()) {
-        // HIT -- to call hit()
-        this.hitList[model].push(coords);
-        return true;
-      } else {
-        // MISS
-        return false;
+    // check hit list
+    for (model in this.hitList) {
+      for (let i = 0; i < this.hitList[model].length; i++) {
+        if (this.hitList[model][i].toString() === coords.toString()) {
+          // NO REHITS
+          return false;
+        }
       }
-    } else {
-      // NO REHITS
-      return false;
     }
+    // if coords hit list, return false (no rehits)
+
+    // check occupied list
+    for (model in this.occupiedList) {
+      for (let i = 0; i < this.occupiedList[model].length; i++) {
+        if (this.occupiedList[model][i].toString() === coords.toString()) {
+          // HIT
+          this.hitList[model].push(coords);
+          console.log(this.hitList);
+          return true;
+        } else {
+          // MISS
+          return false;
+        }
+      }
+    }
+    // if coords in occupied list, return true and push to hitlist
+
+    // if coords not in occupied list, return false
+
+    // if (this.hitList[model].length < this.occupiedList[model].length) {
+    //   for (let i = 0; i < this.occupiedList[model].length; i++) {
+    //     if (this.occupiedList[model][i].toString() === coords.toString()) {
+    //       for (let h = 0; h < this.hitList[model].length; i++) {
+    //         if (this.hitList[model][h].toString() === coords.toString()) {
+    //           // NO REHITS
+    //           return false;
+    //         } else {
+    //           // HIT -- to call hit()
+    //           this.hitList[model].push(coords);
+    //           return true;
+    //         }
+    //       }
+    //     } else {
+    //       // MISS
+    //       return false;
+    //     }
+    //   }
+    // }
   };
 }
 
