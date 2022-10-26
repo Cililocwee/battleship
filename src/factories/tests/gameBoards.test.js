@@ -113,7 +113,7 @@ test("Non-origin positioning - positionBoats correctly modifies occupiedList", (
   });
 });
 
-test.skip("recieveAttack correctly triggers hit() in occupied space's boat", () => {
+test("recieveAttack correctly triggers hit() in occupied space's boat", () => {
   let game1 = boardFactory();
   game1.positionBoats("battleship", [0, 0], "horizontal");
 
@@ -121,7 +121,7 @@ test.skip("recieveAttack correctly triggers hit() in occupied space's boat", () 
   expect(game1.recieveAttack([9, 9], "battleship")).toBe(false);
 });
 
-test.skip("Can't hit the same coords twice", () => {
+test("Can't hit the same coords twice", () => {
   let game1 = boardFactory();
   game1.positionBoats("battleship", [0, 0], "horizontal");
 
@@ -133,7 +133,7 @@ test.skip("Can't hit the same coords twice", () => {
   expect(game1.recieveAttack([6, 6], "carrier")).toBe(false);
 });
 
-test.skip("Trying to hit the same position twice returns false", () => {
+test("Trying to hit the same position twice returns false", () => {
   let game1 = boardFactory();
   game1.positionBoats("battleship", [6, 6], "horizontal");
   expect(game1.recieveAttack([6, 6], "battleship")).toBe(true);
@@ -143,10 +143,18 @@ test.skip("Trying to hit the same position twice returns false", () => {
 test("CAN hit the same boat more than once", () => {
   let game6 = boardFactory();
   game6.positionBoats("battleship", [0, 0], "horizontal");
-  // console.log(game1.occupiedList);
   expect(game6.recieveAttack([0, 0], "battleship")).toBe(true);
-  // console.log(game1.hitList);
   expect(game6.recieveAttack([0, 1], "battleship")).toBe(true);
 });
 
-test.todo("Declares when a boat has been sunk");
+test("Declares when a boat has been sunk", () => {
+  let game = boardFactory();
+  game.positionBoats("battleship", [0, 0], "horizontal");
+  game.positionBoats("carrier", [6, 6], "vertical");
+  game.recieveAttack([0, 0], "battleship");
+  game.recieveAttack([0, 1], "battleship");
+  game.recieveAttack([0, 2], "battleship");
+  game.recieveAttack([0, 3], "battleship");
+  expect(game.hpCheck("battleship")).toBe(true);
+  expect(game.hpCheck("carrier")).toBe(false);
+});
