@@ -15,6 +15,8 @@ function Board() {
     patrolboat: [],
   };
 
+  this.missList = [];
+
   this.positionBoats = function (model, bow, orientation) {
     let coords = [];
     let size;
@@ -51,20 +53,38 @@ function Board() {
     this.occupiedList[model] = coords;
   };
 
+  this.checkCoord = function (coords) {
+    let coordJSON = JSON.stringify(coords);
+    for (let model in this.occupiedList) {
+      let occupiedJSON = JSON.stringify(this.occupiedList[model]);
+      let coordResult = occupiedJSON.indexOf(coordJSON);
+      if (coordResult != -1) {
+        return [coords, true, model];
+      }
+    }
+    return [coords, false];
+  };
+
+  /* On call, the result of checkCoord should be assigned to a variable
+  and used for recieveAttack */
   this.recieveAttack = function (coords, model) {
     let coordJSON = JSON.stringify(coords);
     let occupiedJSON = JSON.stringify(this.occupiedList[model]);
     let hitJSON = JSON.stringify(this.hitList[model]);
+
     let rehit = hitJSON.indexOf(coordJSON);
     let hitStatus = occupiedJSON.indexOf(coordJSON);
 
     if (rehit != -1) {
+      // NO REHITS
       return false;
-    }
-    if (hitStatus != -1) {
+    } else if (hitStatus != -1) {
+      // HIT
       this.hitList[model].push(coords);
       return true;
     } else {
+      // MISS
+      this.missList.push(coords);
       return false;
     }
   };
