@@ -96,6 +96,16 @@ function Board() {
       return false;
     }
   };
+
+  this.boardStatus = function () {
+    if (JSON.stringify(this.hitList) === JSON.stringify(this.occupiedList)) {
+      // GAME OVER
+      return true;
+    } else {
+      // CONTINUE
+      return false;
+    }
+  };
 }
 
 function boardFactory() {

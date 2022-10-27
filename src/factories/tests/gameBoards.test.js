@@ -190,3 +190,19 @@ test("checkCoord - 2. Returns model of occupied space", () => {
   game.positionBoats("submarine", [7, 6], "horizontal");
   expect(game.checkCoord([7, 7])).toEqual([[7, 7], true, "submarine"]);
 });
+
+test("gameBoard.boardStatus()- Can report when all ships are sunk", () => {
+  let game = boardFactory();
+
+  expect(game.boardStatus()).toBe(true);
+
+  game.positionBoats("patrolboat", [5, 5], "horizontal");
+  let coord = game.checkCoord([5, 5]);
+  game.recieveAttack(coord[0], coord[2]);
+
+  expect(game.boardStatus()).toBe(false);
+  coord = game.checkCoord([5, 6]);
+  game.recieveAttack(coord[0], coord[2]);
+
+  expect(game.boardStatus()).toBe(true);
+});
