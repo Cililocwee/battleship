@@ -106,6 +106,10 @@ function Board() {
       return false;
     }
   };
+
+  this.report = function () {
+    return [this.occupiedList, this.hitList];
+  };
 }
 
 function boardFactory() {

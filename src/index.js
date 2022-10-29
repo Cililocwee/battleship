@@ -1,16 +1,87 @@
 import css from "./style.css";
 //  Create the games grids and layout
+import boardFactory from "./factories/gameBoards";
 
 const enemygrid = document.getElementById("enemygrid");
 const playergrid = document.getElementById("playergrid");
 
 // this may need to go on the gameboard object
+function makeId(iterator) {
+  let x;
+  let y;
+
+  if (iterator < 12) {
+    x = iterator;
+    y = 0;
+  }
+
+  if (iterator >= 12 && iterator < 24) {
+    y = 1;
+    x = iterator - 12;
+  }
+
+  if (iterator >= 24 && iterator < 36) {
+    y = 2;
+    x = iterator - 12 * 2;
+  }
+
+  if (iterator >= 36 && iterator < 48) {
+    y = 3;
+    x = iterator - 12 * 3;
+  }
+
+  if (iterator >= 48 && iterator < 60) {
+    y = 4;
+    x = iterator - 12 * 4;
+  }
+
+  if (iterator >= 60 && iterator < 72) {
+    y = 5;
+    x = iterator - 12 * 5;
+  }
+
+  if (iterator >= 72 && iterator < 84) {
+    y = 6;
+    x = iterator - 12 * 6;
+  }
+
+  if (iterator >= 84 && iterator < 96) {
+    y = 7;
+    x = iterator - 12 * 7;
+  }
+
+  if (iterator >= 96 && iterator < 108) {
+    y = 8;
+    x = iterator - 12 * 8;
+  }
+
+  if (iterator >= 108 && iterator < 120) {
+    y = 9;
+    x = iterator - 12 * 9;
+  }
+
+  if (iterator >= 120 && iterator < 132) {
+    y = 10;
+    x = iterator - 12 * 10;
+  }
+
+  if (iterator >= 132 && iterator < 144) {
+    y = 11;
+    x = iterator - 12 * 11;
+  }
+
+  return [x, y];
+}
+
 function displayGrid(target) {
   for (let i = 0; i < 144; i++) {
     let box = document.createElement("div");
-    let idVariable = i;
     box.classList.add("box");
-    box.id = `box-${idVariable}`;
+
+    // box.id = `box-${idVariable}`;
+    let idVariable = makeId(i);
+
+    box.id = `[${idVariable[0]}-${idVariable[1]}]`;
     box.onclick = showCoords;
     target.append(box);
   }
@@ -21,7 +92,7 @@ const enemyLabelLeft = document.getElementById("enemylabelleft");
 const playerLabelTop = document.getElementById("playerlabeltop");
 const playerLabelLeft = document.getElementById("playerlabelleft");
 
-// this may need to gon on the gameboard object
+// this may need to go on the gameboard object
 function displayLabels(target, flag) {
   for (let i = 0; i < 12; i++) {
     let box = document.createElement("div");
@@ -37,78 +108,83 @@ function displayLabels(target, flag) {
   }
 }
 
-displayLabels(enemyLabelTop, 0);
-displayLabels(enemyLabelLeft, 1);
-displayLabels(playerLabelTop, 0);
-displayLabels(playerLabelLeft, 1);
+// debugging tool?
 function showCoords(event) {
-  let x;
-  let y;
-  let id = this.id.split("-")[1];
-
-  if (id < 12) {
-    y = 0;
-    x = id;
-  }
-
-  if (id >= 12 && id < 24) {
-    y = 1;
-    x = id - 12;
-  }
-
-  if (id >= 24 && id < 36) {
-    y = 2;
-    x = id - 12 * 2;
-  }
-
-  if (id >= 36 && id < 48) {
-    y = 3;
-    x = id - 12 * 3;
-  }
-
-  if (id >= 48 && id < 60) {
-    y = 4;
-    x = id - 12 * 4;
-  }
-
-  if (id >= 60 && id < 72) {
-    y = 5;
-    x = id - 12 * 5;
-  }
-
-  if (id >= 72 && id < 84) {
-    y = 6;
-    x = id - 12 * 6;
-  }
-
-  if (id >= 84 && id < 96) {
-    y = 7;
-    x = id - 12 * 7;
-  }
-
-  if (id >= 96 && id < 108) {
-    y = 8;
-    x = id - 12 * 8;
-  }
-
-  if (id >= 108 && id < 120) {
-    y = 9;
-    x = id - 12 * 9;
-  }
-
-  if (id >= 120 && id < 132) {
-    y = 10;
-    x = id - 12 * 10;
-  }
-
-  if (id >= 132 && id < 144) {
-    y = 11;
-    x = id - 12 * 11;
-  }
-
-  console.log(`[${x}, ${y}]`);
+  //   console.log(this.id);
+  // [1,1] = ['[1' , '1]']
+  let splitCoords = this.id.split("-");
+  let formattedCoords = splitCoords.join(", ");
+  console.log(formattedCoords);
+  return formattedCoords;
 }
 
 // calling displayGrid is part of the page loading, not the gameplay loop
 displayGrid(enemygrid);
 displayGrid(playergrid);
+
+displayLabels(enemyLabelTop, 0);
+displayLabels(enemyLabelLeft, 1);
+displayLabels(playerLabelTop, 0);
+displayLabels(playerLabelLeft, 1);
+
+/**********************/
+/* GENERAL TESTING */
+const playerboard = boardFactory();
+playerboard.positionBoats("carrier", [0, 0], "vertical");
+playerboard.positionBoats("patrolboat", [5, 7], "horizontal");
+playerboard.positionBoats("destroyer", [2, 2], "horizontal");
+playerboard.positionBoats("submarine", [4, 4], "horizontal");
+playerboard.positionBoats("battleship", [9, 8], "vertical");
+
+// don't use this for anything, it's just for debugging
+let blackedout = playerboard.report()[0];
+
+function blackout(targetnode) {
+  targetnode.classList.add = "occupiedalive";
+}
+
+// nodelist
+const playerboxes = document.querySelectorAll(".box");
+
+/* Get an array of two objects from report: occupied and hit.
+Take object at index 0 and iterate over its arrays of arrays
+For each arrayB in each arrayA compare array B to the IDs of each node in playerboxes
+if they are the same, call blackout on the playerbox  */
+
+const report = playerboard.report();
+const reportOccupied = report[0];
+const reportHit = report[1];
+const playercarrier = playerboard.report()[0].carrier;
+const playerpatrol = playerboard.report()[0].patrolboat;
+const playersub = playerboard.report()[0].submarine;
+const playerdest = playerboard.report()[0].destroyer;
+const playerbat = playerboard.report()[0].battleship;
+
+function colorBoard(boat) {
+  for (let i = 0; i < playerboxes.length; i++) {
+    let splitCoords = playerboxes[i].id.split("-");
+    let formattedCoords = splitCoords.join(",");
+    for (let j = 0; j < 5; j++) {
+      if (formattedCoords == JSON.stringify(boat[j])) {
+        playerboxes[i].classList.add("occupiedalive");
+      }
+    }
+  }
+}
+colorBoard(playercarrier);
+colorBoard(playerpatrol);
+colorBoard(playersub);
+colorBoard(playerdest);
+colorBoard(playerbat);
+// for (let i = 0; i < playerboxes.length; i++) {
+//   let splitCoords = playerboxes[i].id.split("-");
+//   let formattedCoords = splitCoords.join(",");
+//   for (let j = 0; j < 5; j++) {
+//     if (formattedCoords == JSON.stringify(playercarrier[j])) {
+//       playerboxes[i].classList.add("occupiedalive");
+//     }
+//   }
+//   if (formattedCoords == JSON.stringify(playercarrier[0])) {
+//     playerboxes[i].classList.add("occupiedalive");
+//   }
+// }
