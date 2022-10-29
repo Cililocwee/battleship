@@ -32,19 +32,28 @@ h1 {
 
 /* .box:hover {
   background-color: black;
-} */
-
-.box:nth-child(n + 2):nth-child(-n + 4):hover {
-  background-color: black;
+  width: 42px;
+  z-index: 7;
 }
+.box:hover + .box {
+  display: none;
+} */
 
 .grid {
   display: flex;
   flex-wrap: wrap;
+  position: relative;
+  width: 264px;
+  margin-left: auto;
+  margin-top: auto;
 }
 
 .board {
-  width: 264px;
+  display: flex;
+  background-color: aqua;
+  width: 284px;
+  height: 284px;
+  border: 1px solid gray;
 }
 
 .carrier {

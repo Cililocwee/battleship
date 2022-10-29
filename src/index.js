@@ -4,22 +4,16 @@ import css from "./style.css";
 let enemygrid = document.getElementById("enemygrid");
 let playergrid = document.getElementById("playergrid");
 
-for (let i = 0; i < 144; i++) {
-  let box = document.createElement("div");
-  let idVariable = i;
-  box.classList.add("box");
-  box.id = `box-${idVariable}`;
-  box.onclick = showCoords;
-  enemygrid.append(box);
-}
-
-for (let i = 0; i < 144; i++) {
-  let box = document.createElement("div");
-  let idVariable = i;
-  box.classList.add("box");
-  box.id = `box-${idVariable}`;
-  box.onclick = showCoords;
-  playergrid.append(box);
+// this may need to go on the gameboard object
+function displayGrid(target) {
+  for (let i = 0; i < 144; i++) {
+    let box = document.createElement("div");
+    let idVariable = i;
+    box.classList.add("box");
+    box.id = `box-${idVariable}`;
+    box.onclick = showCoords;
+    target.append(box);
+  }
 }
 
 function showCoords(event) {
@@ -89,3 +83,7 @@ function showCoords(event) {
 
   console.log(`[${x}, ${y}]`);
 }
+
+// calling displayGrid is part of the page loading, not the gameplay loop
+displayGrid(enemygrid);
+displayGrid(playergrid);
