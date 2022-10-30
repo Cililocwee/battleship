@@ -7,20 +7,92 @@
     <title>Battleship</title>
     <link rel="stylesheet" href="../src/style.css" />
   </head>
+
   <body>
-    <div class="container">
-      <div id="playingfield" class="playingfield">
-        <div class="player"><h1>Computer</h1></div>
-        <div id="enemyboard" class="board">
-          <div id="enemylabeltop" class="gridlabeltop"></div>
-          <div id="enemylabelleft" class="gridlabelleft"></div>
-          <div id="enemygrid" class="grid"></div>
+    <div class="container" id="gamecontainer">
+      <div class="container">
+        <div id="playingfield" class="playingfield">
+          <div class="player"><h1>Computer</h1></div>
+          <div id="enemyboard" class="board">
+            <div id="enemylabeltop" class="gridlabeltop"></div>
+            <div id="enemylabelleft" class="gridlabelleft"></div>
+            <div id="enemygrid" class="grid"></div>
+          </div>
+          <div class="player"><h1>Player</h1></div>
+          <div id="playerboard" class="board">
+            <div id="playerlabeltop" class="gridlabeltop"></div>
+            <div id="playerlabelleft" class="gridlabelleft"></div>
+            <div id="playergrid" class="grid"></div>
+          </div>
         </div>
-        <div class="player"><h1>Player</h1></div>
-        <div id="playerboard" class="board">
-          <div id="playerlabeltop" class="gridlabeltop"></div>
-          <div id="playerlabelleft" class="gridlabelleft"></div>
-          <div id="playergrid" class="grid"></div>
+      </div>
+
+      <div class="container" id="optioncontainer">
+        <div class="container" id="gamecontrols">
+          <fieldset>
+            <legend>Choose your ship:</legend>
+            <div>
+              <select name="ships" id="ships">
+                <option value="carrier">Carrier</option>
+                <option value="battleship">Battleship</option>
+                <option value="destroyer">Destroyer</option>
+                <option value="submarine">Submarine</option>
+                <option value="patrolboat">Patrol Boat</option>
+              </select>
+              <!-- <input
+                type="radio"
+                name="shiptype"
+                id="carrier"
+                value="carrier"
+                checked
+              />
+              <label for="carrier">Carrier</label>
+
+              <input
+                type="radio"
+                name="shiptype"
+                id="battleship"
+                value="battleship"
+              />
+              <label for="battleship">Battleship</label> -->
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Bow coordinates:</legend>
+            <!-- <input
+              type="text"
+              name="bowcoords"
+              id="bowcoords"
+              placeholder="Coordinates for your bow..."
+            /> -->
+            <div class="coorddisplay">
+              <h4 id="bowcoords">Please click on the grid</h4>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Choose an orientation:</legend>
+            <div>
+              <input
+                type="radio"
+                name="orientation"
+                id="horizontal"
+                value="horizontal"
+                checked
+              />
+              <label for="horizontal">Horizontal</label>
+              <input
+                type="radio"
+                name="orientation"
+                id="vertical"
+                value="vertical"
+              />
+              <label for="vertical">Vertical</label>
+            </div>
+          </fieldset>
+
+          <button type="submit" id="submit">Submit</button>
         </div>
       </div>
     </div>

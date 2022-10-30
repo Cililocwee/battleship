@@ -115,6 +115,7 @@ function showCoords(event) {
   let splitCoords = this.id.split("-");
   let formattedCoords = splitCoords.join(", ");
   console.log(formattedCoords);
+  document.getElementById("bowcoords").innerText = formattedCoords;
   return formattedCoords;
 }
 
@@ -127,24 +128,49 @@ displayLabels(enemyLabelLeft, 1);
 displayLabels(playerLabelTop, 0);
 displayLabels(playerLabelLeft, 1);
 
+/****************************/
 /**********************/
 /* GENERAL TESTING */
+
 const playerboard = boardFactory();
-playerboard.positionBoats("carrier", [0, 0], "vertical");
-playerboard.positionBoats("patrolboat", [5, 7], "horizontal");
-playerboard.positionBoats("destroyer", [2, 2], "horizontal");
-playerboard.positionBoats("submarine", [4, 4], "horizontal");
-playerboard.positionBoats("battleship", [9, 8], "vertical");
 
-// don't use this for anything, it's just for debugging
-let blackedout = playerboard.report()[0];
+let shiptype;
+let coordinput;
+let orientinput;
 
-function blackout(targetnode) {
-  targetnode.classList.add = "occupiedalive";
+function getShipType() {
+  return document.getElementById("ships").value;
 }
 
+function getCoordinates() {
+  return JSON.parse(document.getElementById("bowcoords").innerHTML);
+}
+
+function getOrientation() {
+  return document.querySelector("input[name='orientation']:checked").value;
+}
+
+const submitBtn = document.getElementById("submit");
+submitBtn.addEventListener("click", () => {
+  shiptype = getShipType();
+  orientinput = getOrientation();
+  coordinput = getCoordinates();
+
+  // debugging
+  inputCheck();
+
+  playerboard.positionBoats(shiptype, coordinput, orientinput);
+  colorBoard(playerboard.report()[0][shiptype]);
+});
+
+// playerboard.positionBoats("carrier", [0, 0], "vertical");
+// playerboard.positionBoats("patrolboat", [5, 7], "horizontal");
+// playerboard.positionBoats("destroyer", [2, 2], "horizontal");
+// playerboard.positionBoats("submarine", [4, 4], "horizontal");
+// playerboard.positionBoats("battleship", [9, 8], "vertical");
+
 // nodelist
-const playerboxes = document.querySelectorAll(".box");
+const playerboxes = document.querySelectorAll("#playergrid .box");
 
 /* Get an array of two objects from report: occupied and hit.
 Take object at index 0 and iterate over its arrays of arrays
@@ -152,13 +178,23 @@ For each arrayB in each arrayA compare array B to the IDs of each node in player
 if they are the same, call blackout on the playerbox  */
 
 const report = playerboard.report();
-const reportOccupied = report[0];
-const reportHit = report[1];
 const playercarrier = playerboard.report()[0].carrier;
 const playerpatrol = playerboard.report()[0].patrolboat;
 const playersub = playerboard.report()[0].submarine;
 const playerdest = playerboard.report()[0].destroyer;
 const playerbat = playerboard.report()[0].battleship;
+
+function occupy(targetnode) {
+  targetnode.classList.add("occupiedalive");
+}
+
+function hit(targetnode) {
+  targetnode.classList.add("occupiedhit");
+}
+
+function sink(targetnode) {
+  targetnode.classList.add("occupiedsunk");
+}
 
 function colorBoard(boat) {
   for (let i = 0; i < playerboxes.length; i++) {
@@ -166,25 +202,20 @@ function colorBoard(boat) {
     let formattedCoords = splitCoords.join(",");
     for (let j = 0; j < 5; j++) {
       if (formattedCoords == JSON.stringify(boat[j])) {
-        playerboxes[i].classList.add("occupiedalive");
+        occupy(playerboxes[i]);
       }
     }
   }
 }
-colorBoard(playercarrier);
-colorBoard(playerpatrol);
-colorBoard(playersub);
-colorBoard(playerdest);
-colorBoard(playerbat);
-// for (let i = 0; i < playerboxes.length; i++) {
-//   let splitCoords = playerboxes[i].id.split("-");
-//   let formattedCoords = splitCoords.join(",");
-//   for (let j = 0; j < 5; j++) {
-//     if (formattedCoords == JSON.stringify(playercarrier[j])) {
-//       playerboxes[i].classList.add("occupiedalive");
-//     }
-//   }
-//   if (formattedCoords == JSON.stringify(playercarrier[0])) {
-//     playerboxes[i].classList.add("occupiedalive");
-//   }
-// }
+
+function inputCheck() {
+  console.log(shiptype);
+  console.log(coordinput);
+  console.log(orientinput);
+}
+
+// colorBoard(playercarrier);
+// colorBoard(playerpatrol);
+// colorBoard(playersub);
+// colorBoard(playerdest);
+// colorBoard(playerbat);

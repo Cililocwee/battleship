@@ -79,3 +79,25 @@ h1 {
 .occupiedhit {
   background-color: var(--hit);
 }
+
+.occupiedsunk {
+  background-color: var(--font-on-background);
+}
+
+#gamecontainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 50px;
+}
+
+#optioncontainer {
+  width: fit-content;
+  padding: 25px;
+  background-color: var(--grid-background);
+}
+
+#bowcoords {
+  text-align: center;
+  margin: auto;
+}
