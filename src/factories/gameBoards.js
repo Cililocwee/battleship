@@ -20,7 +20,8 @@ function Board() {
   this.positionBoats = function (model, bow, orientation) {
     let coords = [];
     let size;
-
+    const sizeError = "Error: Off the map";
+    const overLapError = "Error: Overlapping boats";
     switch (model) {
       case "carrier":
         size = 5;
@@ -40,11 +41,17 @@ function Board() {
     }
 
     if (orientation === "vertical") {
+      if (bow[1] + size > 12) {
+        return sizeError;
+      }
       for (let i = 0; i < size; i++) {
         coords.push([bow[0], bow[1] + i]);
       }
     }
     if (orientation === "horizontal") {
+      if (bow[0] + size > 12) {
+        return sizeError;
+      }
       for (let i = 0; i < size; i++) {
         coords.push([bow[0] + i, bow[1]]);
       }
