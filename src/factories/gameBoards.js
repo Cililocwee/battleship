@@ -39,14 +39,14 @@ function Board() {
         break;
     }
 
-    if (orientation === "horizontal") {
-      for (let i = bow[1]; i < size + bow[1]; i++) {
-        coords.push([i, bow[0]]);
+    if (orientation === "vertical") {
+      for (let i = 0; i < size; i++) {
+        coords.push([bow[0], bow[1] + i]);
       }
     }
-    if (orientation === "vertical") {
-      for (let i = bow[1]; i < size + bow[1]; i++) {
-        coords.push([bow[0], i]);
+    if (orientation === "horizontal") {
+      for (let i = 0; i < size; i++) {
+        coords.push([bow[0] + i, bow[1]]);
       }
     }
 

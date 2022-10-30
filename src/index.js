@@ -160,6 +160,7 @@ submitBtn.addEventListener("click", () => {
   inputCheck();
 
   playerboard.positionBoats(shiptype, coordinput, orientinput);
+  console.log(playerboard.occupiedList);
   colorBoard(playerboard.report()[0][shiptype]);
 });
 
@@ -177,12 +178,12 @@ Take object at index 0 and iterate over its arrays of arrays
 For each arrayB in each arrayA compare array B to the IDs of each node in playerboxes
 if they are the same, call blackout on the playerbox  */
 
-const report = playerboard.report();
-const playercarrier = playerboard.report()[0].carrier;
-const playerpatrol = playerboard.report()[0].patrolboat;
-const playersub = playerboard.report()[0].submarine;
-const playerdest = playerboard.report()[0].destroyer;
-const playerbat = playerboard.report()[0].battleship;
+// const report = playerboard.report();
+// const playercarrier = playerboard.report()[0].carrier;
+// const playerpatrol = playerboard.report()[0].patrolboat;
+// const playersub = playerboard.report()[0].submarine;
+// const playerdest = playerboard.report()[0].destroyer;
+// const playerbat = playerboard.report()[0].battleship;
 
 function occupy(targetnode) {
   targetnode.classList.add("occupiedalive");
