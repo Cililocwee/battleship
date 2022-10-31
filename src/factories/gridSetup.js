@@ -91,10 +91,10 @@ const gridSetup = (function () {
       let box = document.createElement("div");
       box.classList.add("box");
       if (flag == 0) {
-        box.innerText = i;
+        box.innerText = String.fromCharCode(65 + i);
       }
       if (flag == 1) {
-        box.innerText = String.fromCharCode(65 + i);
+        box.innerText = i + 1;
       }
 
       target.append(box);

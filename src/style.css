@@ -74,14 +74,20 @@ h1 {
 
 .occupiedalive {
   background-color: var(--grid-lines);
+  background-image: url("../dist/circle.svg");
 }
 
 .occupiedhit {
   background-color: var(--hit);
+  background: url("../dist/hit.svg");
 }
 
 .occupiedsunk {
   background-color: var(--font-on-background);
+}
+
+.miss {
+  background: url("../dist/miss.svg");
 }
 
 #gamecontainer {
@@ -93,6 +99,7 @@ h1 {
 
 #optioncontainer {
   width: fit-content;
+  max-width: 250px;
   padding: 25px;
   background-color: var(--grid-background);
 }
@@ -100,4 +107,16 @@ h1 {
 #bowcoords {
   text-align: center;
   margin: auto;
+}
+
+#explanation {
+  border: 1px solid var(--grid-lines);
+  padding-bottom: 15px;
+  margin-bottom: 10px;
+}
+
+#explanation ol {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
