@@ -77,6 +77,7 @@ function Board() {
       this.occupiedList[model] = coords;
     } else {
       this.occupiedList[model] = [];
+      return false;
     }
   };
 

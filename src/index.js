@@ -2,6 +2,7 @@ import css from "./style.css";
 import boardFactory from "./factories/gameBoards";
 import gridSetup from "./factories/gridSetup";
 
+/********** GAME SETUP  ************/
 // setting up for the game
 const enemygrid = document.getElementById("enemygrid");
 const playergrid = document.getElementById("playergrid");
@@ -20,10 +21,7 @@ gridSetup.displayLabels(enemyLabelLeft, 1);
 gridSetup.displayLabels(playerLabelTop, 0);
 gridSetup.displayLabels(playerLabelLeft, 1);
 
-/****************************/
-/**********************/
-/* GENERAL GAME LOOP*/
-
+// initiating game
 const playerboard = boardFactory();
 
 let shiptype;
@@ -45,6 +43,8 @@ function getOrientation() {
 
 // adds functionality to submit button
 const submitBtn = document.getElementById("submit");
+const shipSelection = document.getElementById("ships");
+
 submitBtn.addEventListener("click", () => {
   shiptype = getShipType();
   orientinput = getOrientation();
@@ -53,20 +53,23 @@ submitBtn.addEventListener("click", () => {
   // debugging
   inputCheck();
 
-  playerboard.positionBoats(shiptype, coordinput, orientinput);
-  console.log(playerboard.occupiedList);
+  if (playerboard.positionBoats(shiptype, coordinput, orientinput)) {
+    // Don't do anything if positionBoats returns false
+    return false;
+  } else {
+    playerboard.positionBoats(shiptype, coordinput, orientinput);
+  }
+  // console.log(playerboard.occupiedList);
   colorBoard(playerboard.report()[0][shiptype]);
+
+  // removes ships from list
+  shipSelection[shipSelection.selectedIndex].remove();
 });
+
+/**********  DOM manipulation ***********/
 
 // nodelist
 const playerboxes = document.querySelectorAll("#playergrid .box");
-
-/* Get an array of two objects from report: occupied and hit.
-Take object at index 0 and iterate over its arrays of arrays
-For each arrayB in each arrayA compare array B to the IDs of each node in playerboxes
-if they are the same, call blackout on the playerbox  */
-
-// DOM manipulation
 
 function occupy(targetnode) {
   targetnode.classList.add("occupiedalive");
