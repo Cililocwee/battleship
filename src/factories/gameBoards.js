@@ -20,6 +20,7 @@ function Board() {
   this.positionBoats = function (model, bow, orientation) {
     let coords = [];
     let size;
+    let errorFlag = false;
     const sizeError = "Error: Off the map";
     const overLapError = "Error: Overlapping boats";
     switch (model) {
@@ -39,25 +40,44 @@ function Board() {
         size = 2;
         break;
     }
-
+    // if vertical, increments the y coord
     if (orientation === "vertical") {
+      // boat goes off the map
       if (bow[1] + size > 12) {
         return sizeError;
       }
+
       for (let i = 0; i < size; i++) {
+        // boats shouldn't overlap vertically
+        if (this.checkCoord([bow[0], bow[1] + i])[1] === true) {
+          errorFlag = true;
+          return overLapError;
+        }
+        // push the created coords to array
         coords.push([bow[0], bow[1] + i]);
       }
     }
+    // if horizontal, increments the x coord
     if (orientation === "horizontal") {
+      // boat goes off the map
       if (bow[0] + size > 12) {
         return sizeError;
       }
       for (let i = 0; i < size; i++) {
+        // boats shouldn't overlap horizontally
+        if (this.checkCoord([bow[0] + i, bow[1]])[1] === true) {
+          errorFlag = true;
+          return overLapError;
+        }
+        // push the created coords to array
         coords.push([bow[0] + i, bow[1]]);
       }
     }
-
-    this.occupiedList[model] = coords;
+    if (!errorFlag) {
+      this.occupiedList[model] = coords;
+    } else {
+      this.occupiedList[model] = [];
+    }
   };
 
   this.checkCoord = function (coords) {
