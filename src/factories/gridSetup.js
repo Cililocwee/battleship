@@ -81,6 +81,14 @@ const gridSetup = (function () {
         box.onclick = showCoords;
       }
 
+      if (target.id === "enemygrid") {
+        box.addEventListener("click", () => {
+          if (box.classList.contains("enemyoccupied")) {
+            box.classList.add("occupiedhit");
+          }
+        });
+      }
+
       target.append(box);
     }
   }
@@ -112,7 +120,7 @@ const gridSetup = (function () {
     return formattedCoords;
   }
 
-  return { displayGrid, displayLabels };
+  return { displayGrid, displayLabels, showCoords };
 })();
 
 export default gridSetup;

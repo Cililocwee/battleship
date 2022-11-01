@@ -1,6 +1,7 @@
 import css from "./style.css";
 import boardFactory from "./factories/gameBoards";
 import gridSetup from "./factories/gridSetup";
+import gameloop from "./factories/game";
 
 /********** GAME SETUP  ************/
 // setting up for the game
@@ -22,7 +23,20 @@ gridSetup.displayLabels(playerLabelTop, 0);
 gridSetup.displayLabels(playerLabelLeft, 1);
 
 // initiating game
-const playerboard = boardFactory();
+
+// setting up the enemy's board
+const enemyboard = gameloop.enemyboard;
+console.log(enemyboard);
+
+// ** need to add class "enemyoccupied" to each of these coords
+// 1. Get coords from enemyboard.occupiedList
+// 2. Translate those coords to id format
+// 3. Make nodelist of ids
+// 4. Loop through nodelist
+// 5. For each node, classList.add("enemyoccupied");
+
+// player part
+const playerboard = gameloop.playerboard;
 
 let shiptype;
 let coordinput;
@@ -41,10 +55,12 @@ function getOrientation() {
   return document.querySelector("input[name='orientation']:checked").value;
 }
 
+// DOM
 // adds functionality to submit button
 const submitBtn = document.getElementById("submit");
 const shipSelection = document.getElementById("ships");
 
+// all remaining playerboard references are here
 submitBtn.addEventListener("click", () => {
   shiptype = getShipType();
   orientinput = getOrientation();
@@ -59,14 +75,14 @@ submitBtn.addEventListener("click", () => {
   } else {
     playerboard.positionBoats(shiptype, coordinput, orientinput);
   }
-  // console.log(playerboard.occupiedList);
+  console.log(playerboard.occupiedList);
   colorBoard(playerboard.report()[0][shiptype]);
 
   // removes ships from list
   shipSelection[shipSelection.selectedIndex].remove();
 });
 
-/**********  DOM manipulation ***********/
+/********** DOM manipulation ***********/
 
 // nodelist
 const playerboxes = document.querySelectorAll("#playergrid .box");
