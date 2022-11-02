@@ -122,7 +122,33 @@ const gridSetup = (function () {
     return formattedCoords;
   }
 
-  return { displayGrid, displayLabels, showCoords };
+  function makeEnemyBoard() {
+    const enemygrid = document.getElementById("enemygrid");
+    const enemyLabelTop = document.getElementById("enemylabeltop");
+    const enemyLabelLeft = document.getElementById("enemylabelleft");
+
+    displayGrid(enemygrid);
+    gridSetup.displayLabels(enemyLabelTop, 0);
+    gridSetup.displayLabels(enemyLabelLeft, 1);
+  }
+
+  function makePlayerBoard() {
+    const playergrid = document.getElementById("playergrid");
+
+    const playerLabelTop = document.getElementById("playerlabeltop");
+    const playerLabelLeft = document.getElementById("playerlabelleft");
+
+    gridSetup.displayGrid(playergrid);
+    gridSetup.displayLabels(playerLabelTop, 0);
+    gridSetup.displayLabels(playerLabelLeft, 1);
+  }
+
+  return {
+    displayGrid,
+    displayLabels,
+    makeEnemyBoard,
+    makePlayerBoard,
+  };
 })();
 
 export default gridSetup;

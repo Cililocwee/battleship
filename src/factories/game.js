@@ -2,10 +2,10 @@ import boardFactory from "./gameBoards";
 const gameloop = (() => {
   // initiating game
 
-  // setting up the enemy's board
+  // set up enemy's board
   const enemyboard = boardFactory();
 
-  // need to add class "enemyoccupied" to each of these coords
+  // need to add coord randomization
   enemyboard.positionBoats("battleship", [0, 0], "horizontal");
   enemyboard.positionBoats("carrier", [0, 1], "horizontal");
   enemyboard.positionBoats("submarine", [0, 2], "horizontal");
@@ -14,7 +14,7 @@ const gameloop = (() => {
 
   console.log(enemyboard.report()[0]);
 
-  // player part
+  // set up player's board
   const playerboard = boardFactory();
 
   // giving hit functionality to the enemygrid
