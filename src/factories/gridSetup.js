@@ -85,6 +85,8 @@ const gridSetup = (function () {
         box.addEventListener("click", () => {
           if (box.classList.contains("enemyoccupied")) {
             box.classList.add("occupiedhit");
+          } else {
+            box.classList.add("miss");
           }
         });
       }

@@ -29,11 +29,26 @@ const enemyboard = gameloop.enemyboard;
 console.log(enemyboard);
 
 // ** need to add class "enemyoccupied" to each of these coords
-// 1. Get coords from enemyboard.occupiedList
-// 2. Translate those coords to id format
-// 3. Make nodelist of ids
-// 4. Loop through nodelist
-// 5. For each node, classList.add("enemyoccupied");
+// function activateEnemyCells() {
+//   let enemyOccupied = enemyboard.occupiedList;
+
+//   // get ids from coords
+//   let idlookup = [];
+
+//   for (let thing in enemyOccupied) {
+//     for (let i = 0; i < enemyOccupied[thing].length; i++) {
+//       idlookup.push(
+//         JSON.stringify(enemyOccupied[thing][i]).split(",").join("-")
+//       );
+//     }
+//   }
+
+//   for (let h = 0; h < idlookup.length; h++) {
+//     document.getElementById(idlookup[h]).classList.add("enemyoccupied");
+//   }
+// }
+
+gameloop.activateEnemyCells();
 
 // player part
 const playerboard = gameloop.playerboard;

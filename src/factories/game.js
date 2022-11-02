@@ -17,7 +17,27 @@ const gameloop = (() => {
   // player part
   const playerboard = boardFactory();
 
-  return { playerboard, enemyboard };
+  // giving hit functionality to the enemygrid
+  function activateEnemyCells() {
+    let enemyOccupied = enemyboard.occupiedList;
+
+    // get ids from coords
+    let idlookup = [];
+
+    for (let thing in enemyOccupied) {
+      for (let i = 0; i < enemyOccupied[thing].length; i++) {
+        idlookup.push(
+          JSON.stringify(enemyOccupied[thing][i]).split(",").join("-")
+        );
+      }
+    }
+
+    for (let h = 0; h < idlookup.length; h++) {
+      document.getElementById(idlookup[h]).classList.add("enemyoccupied");
+    }
+  }
+
+  return { playerboard, enemyboard, activateEnemyCells };
 })();
 
 export default gameloop;

@@ -80,6 +80,7 @@ h1 {
 .occupiedhit {
   background-color: var(--hit);
   background: url("../dist/hit.svg");
+  background-size: contain;
 }
 
 .occupiedsunk {
