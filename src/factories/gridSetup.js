@@ -121,12 +121,11 @@ const gridSetup = (function () {
     document.getElementById("bowcoords").innerText = formattedCoords;
     return formattedCoords;
   }
+  const enemygrid = document.getElementById("enemygrid");
+  const enemyLabelTop = document.getElementById("enemylabeltop");
+  const enemyLabelLeft = document.getElementById("enemylabelleft");
 
   function makeEnemyBoard() {
-    const enemygrid = document.getElementById("enemygrid");
-    const enemyLabelTop = document.getElementById("enemylabeltop");
-    const enemyLabelLeft = document.getElementById("enemylabelleft");
-
     displayGrid(enemygrid);
     gridSetup.displayLabels(enemyLabelTop, 0);
     gridSetup.displayLabels(enemyLabelLeft, 1);

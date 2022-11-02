@@ -44,14 +44,14 @@ function Board() {
     if (orientation === "vertical") {
       // boat goes off the map
       if (bow[1] + size > 12) {
-        return sizeError;
+        return [sizeError, true];
       }
 
       for (let i = 0; i < size; i++) {
         // boats shouldn't overlap vertically
         if (this.checkCoord([bow[0], bow[1] + i])[1] === true) {
           errorFlag = true;
-          return overLapError;
+          return [overLapError, errorFlag];
         }
         // push the created coords to array
         coords.push([bow[0], bow[1] + i]);
@@ -61,13 +61,13 @@ function Board() {
     if (orientation === "horizontal") {
       // boat goes off the map
       if (bow[0] + size > 12) {
-        return sizeError;
+        return [sizeError, errorFlag];
       }
       for (let i = 0; i < size; i++) {
         // boats shouldn't overlap horizontally
         if (this.checkCoord([bow[0] + i, bow[1]])[1] === true) {
           errorFlag = true;
-          return overLapError;
+          return [overLapError, errorFlag];
         }
         // push the created coords to array
         coords.push([bow[0] + i, bow[1]]);

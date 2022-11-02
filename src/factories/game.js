@@ -6,13 +6,37 @@ const gameloop = (() => {
   const enemyboard = boardFactory();
 
   // need to add coord randomization
-  enemyboard.positionBoats("battleship", [0, 0], "horizontal");
-  enemyboard.positionBoats("carrier", [0, 1], "horizontal");
-  enemyboard.positionBoats("submarine", [0, 2], "horizontal");
-  enemyboard.positionBoats("destroyer", [0, 3], "horizontal");
-  enemyboard.positionBoats("patrolboat", [0, 4], "horizontal");
+  let randomflag = true;
+  function randomcoords() {
+    let randomx = Math.floor(Math.random() * 11);
+    let randomy = Math.floor(Math.random() * 11);
+    return [randomx, randomy];
+  }
 
-  console.log(enemyboard.report()[0]);
+  function randomorient() {
+    let toincoss = Math.random();
+    if (toincoss < 0.5) {
+      console.log("vertical");
+      return "vertical";
+    }
+    if (toincoss >= 0.5) {
+      console.log("horizontal");
+      return "horizontal";
+    }
+  }
+
+  // need to pass random numbers into the coords
+  // if recieve something back, try again
+
+  function plotEnemyBoats() {
+    for (let model in enemyboard.occupiedList) {
+      while (enemyboard.occupiedList[model].length == 0) {
+        enemyboard.positionBoats(model, randomcoords(), randomorient());
+      }
+    }
+  }
+
+  //plotEnemyBoats();
 
   // set up player's board
   const playerboard = boardFactory();
@@ -37,7 +61,17 @@ const gameloop = (() => {
     }
   }
 
-  return { playerboard, enemyboard, activateEnemyCells };
+  function startGame() {
+    plotEnemyBoats();
+  }
+
+  function resetGame() {
+    for (let model in enemyboard.occupiedList) {
+      enemyboard.occupiedList[model] = [];
+    }
+  }
+
+  return { playerboard, enemyboard, activateEnemyCells, startGame, resetGame };
 })();
 
 export default gameloop;

@@ -5,15 +5,31 @@ import tools from "./factories/utilities";
 
 /********** GAME SETUP  ************/
 // make each player's board (grid)
-gridSetup.makeEnemyBoard();
+// gridSetup.makeEnemyBoard();
 gridSetup.makePlayerBoard();
 
 // set up each player's board (game)
 const enemyboard = gameloop.enemyboard;
 const playerboard = gameloop.playerboard;
 
-// Enemy cells can be hit or missed
-gameloop.activateEnemyCells();
+// plot enemy ships
+const startBtn = document.getElementById("start");
+const grid = document.getElementById("enemygrid");
+const labelTop = document.getElementById("enemylabeltop");
+const labelLeft = document.getElementById("enemylabelleft");
+
+startBtn.addEventListener("click", () => {
+  gameloop.resetGame();
+  grid.replaceChildren();
+  labelTop.replaceChildren();
+  labelLeft.replaceChildren();
+
+  gridSetup.makeEnemyBoard();
+  gameloop.startGame();
+  // Enemy cells can be hit or missed
+  gameloop.activateEnemyCells();
+  console.log(enemyboard.report()[0]);
+});
 
 // adds functionality to submit button
 const submitBtn = document.getElementById("submit");
@@ -23,11 +39,6 @@ submitBtn.addEventListener("click", () => {
   let shiptype = tools.getShipType();
   let orientinput = tools.getOrientation();
   let coordinput = tools.getCoordinates();
-
-  // debugging
-  // console.log(shiptype);
-  // console.log(coordinput);
-  // console.log(orientinput);
 
   if (playerboard.positionBoats(shiptype, coordinput, orientinput)) {
     // Don't do anything if positionBoats returns false
