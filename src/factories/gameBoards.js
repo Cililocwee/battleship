@@ -1,7 +1,25 @@
+import shipYard from "./ships";
+
 function Board() {
   this.grid = Array(12)
     .fill(null)
     .map(() => Array(12).fill(0));
+
+  this.computerFleet = [
+    ["carrier", null, 5, []],
+    ["battleship", null, 4, []],
+    ["destroyer", null, 3, []],
+    ["submarine", null, 3, []],
+    ["patrolboat", null, 2, []],
+  ];
+
+  this.playerFleet = [
+    ["carrier", null, 5, []],
+    ["battleship", null, 4, []],
+    ["destroyer", null, 3, []],
+    ["submarine", null, 3, []],
+    ["patrolboat", null, 2, []],
+  ];
 
   this.occupiedList = {
     carrier: [],
