@@ -1,5 +1,3 @@
-import shipYard from "./ships";
-
 function Board() {
   this.grid = Array(12)
     .fill(null)
@@ -21,23 +19,9 @@ function Board() {
     ["patrolboat", null, 2, []],
   ];
 
-  this.occupiedList = {
-    carrier: [],
-    battleship: [],
-    destroyer: [],
-    submarine: [],
-    patrolboat: [],
-  };
-
-  this.hitList = {
-    carrier: [],
-    battleship: [],
-    destroyer: [],
-    submarine: [],
-    patrolboat: [],
-  };
-
+  this.occupied = [];
   this.missList = [];
+  this.hitList = [];
 
   this.positionBoats = function (model, bow, orientation) {
     let coords = [];
@@ -71,10 +55,15 @@ function Board() {
 
       for (let i = 0; i < size; i++) {
         // boats shouldn't overlap vertically
-        if (this.checkCoord([bow[0], bow[1] + i])[1] === true) {
+        if (
+          JSON.stringify(this.occupied).indexOf(
+            JSON.stringify([bow[0], bow[1] + i])
+          ) != -1
+        ) {
           errorFlag = true;
           return [overLapError, errorFlag];
         }
+
         // push the created coords to array
         coords.push([bow[0], bow[1] + i]);
       }
@@ -87,7 +76,11 @@ function Board() {
       }
       for (let i = 0; i < size; i++) {
         // boats shouldn't overlap horizontally
-        if (this.checkCoord([bow[0] + i, bow[1]])[1] === true) {
+        if (
+          JSON.stringify(this.occupied).indexOf(
+            JSON.stringify(bow[0] + i, bow[1])
+          ) != -1
+        ) {
           errorFlag = true;
           return [overLapError, errorFlag];
         }
@@ -96,21 +89,64 @@ function Board() {
       }
     }
     if (!errorFlag) {
-      this.occupiedList[model] = coords;
+      // this.occupiedList[model] = coords;
+      switch (model) {
+        case "carrier":
+          this.playerFleet[0][3] = coords;
+          this.playerFleet[0][1] = orientation;
+          this.occupied.push(...coords);
+          break;
+        case "battleship":
+          this.playerFleet[1][3] = coords;
+          this.playerFleet[1][1] = orientation;
+          this.occupied.push(...coords);
+          break;
+        case "destroyer":
+          this.playerFleet[2][3] = coords;
+          this.playerFleet[2][1] = orientation;
+          this.occupied.push(...coords);
+          break;
+        case "submarine":
+          this.playerFleet[3][3] = coords;
+          this.playerFleet[3][1] = orientation;
+          this.occupied.push(...coords);
+          break;
+        case "patrolboat":
+          this.playerFleet[4][3] = coords;
+          this.playerFleet[4][1] = orientation;
+          this.occupied.push(...coords);
+          break;
+      }
     } else {
-      this.occupiedList[model] = [];
+      // this.occupiedList[model] = [];
+      switch (model) {
+        case "carrier":
+          this.playerFleet[0][3] = [];
+          break;
+        case "battleship":
+          this.playerFleet[1][3] = [];
+          break;
+        case "destroyer":
+          this.playerFleet[2][3] = [];
+          break;
+        case "submarine":
+          this.playerFleet[3][3] = [];
+          break;
+        case "patrolboat":
+          this.playerFleet[4][3] = [];
+          break;
+      }
       return false;
     }
   };
 
   this.checkCoord = function (coords) {
     let coordJSON = JSON.stringify(coords);
-    for (let model in this.occupiedList) {
-      let occupiedJSON = JSON.stringify(this.occupiedList[model]);
+    for (let i = 0; i < this.occupied; i++) {
+      let occupiedJSON = JSON.stringify(this.occupied);
       let coordResult = occupiedJSON.indexOf(coordJSON);
       if (coordResult != -1) {
-        // console.log([coords, true, model]);
-        return [coords, true, model];
+        return [coords, true];
       }
     }
     return [coords, false];
@@ -118,10 +154,10 @@ function Board() {
 
   /* On call, the result of checkCoord should be assigned to a variable
   and used for recieveAttack */
-  this.recieveAttack = function (coords, model) {
+  this.recieveAttack = function (coords) {
     let coordJSON = JSON.stringify(coords);
-    let occupiedJSON = JSON.stringify(this.occupiedList[model]);
-    let hitJSON = JSON.stringify(this.hitList[model]);
+    let occupiedJSON = JSON.stringify(this.occupied);
+    let hitJSON = JSON.stringify(this.hitList);
 
     let rehit = hitJSON.indexOf(coordJSON);
     let hitStatus = occupiedJSON.indexOf(coordJSON);
@@ -131,8 +167,8 @@ function Board() {
       return false;
     } else if (hitStatus != -1) {
       // HIT
-      console.log("Hit");
-      this.hitList[model].push(coords);
+      //console.log("Hit");
+      this.hitList.push(coords);
       return true;
     } else {
       // MISS
@@ -141,26 +177,18 @@ function Board() {
     }
   };
 
-  this.hpCheck = function (model) {
-    if (this.occupiedList[model].length === this.hitList[model].length) {
-      return true;
-    } else {
-      return false;
-    }
+  this.hpCheck = function (ship) {
+    return ship.hp;
   };
 
   this.boardStatus = function () {
-    if (JSON.stringify(this.hitList) === JSON.stringify(this.occupiedList)) {
+    if (this.hitList.length == this.occupied.length) {
       // GAME OVER
       return true;
     } else {
       // CONTINUE
       return false;
     }
-  };
-
-  this.report = function () {
-    return [this.occupiedList, this.hitList];
   };
 }
 
