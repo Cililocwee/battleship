@@ -127,8 +127,8 @@ const gridSetup = (function () {
 
   function makeEnemyBoard() {
     displayGrid(enemygrid);
-    gridSetup.displayLabels(enemyLabelTop, 0);
-    gridSetup.displayLabels(enemyLabelLeft, 1);
+    displayLabels(enemyLabelTop, 0);
+    displayLabels(enemyLabelLeft, 1);
   }
 
   function makePlayerBoard() {

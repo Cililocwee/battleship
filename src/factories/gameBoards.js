@@ -1,4 +1,8 @@
 function Board() {
+  this.grid = Array(12)
+    .fill(null)
+    .map(() => Array(12).fill(0));
+
   this.occupiedList = {
     carrier: [],
     battleship: [],
@@ -87,6 +91,7 @@ function Board() {
       let occupiedJSON = JSON.stringify(this.occupiedList[model]);
       let coordResult = occupiedJSON.indexOf(coordJSON);
       if (coordResult != -1) {
+        // console.log([coords, true, model]);
         return [coords, true, model];
       }
     }
@@ -108,6 +113,7 @@ function Board() {
       return false;
     } else if (hitStatus != -1) {
       // HIT
+      console.log("Hit");
       this.hitList[model].push(coords);
       return true;
     } else {

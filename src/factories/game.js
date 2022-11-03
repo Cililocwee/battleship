@@ -5,8 +5,6 @@ const gameloop = (() => {
   // set up enemy's board
   const enemyboard = boardFactory();
 
-  // need to add coord randomization
-  let randomflag = true;
   function randomcoords() {
     let randomx = Math.floor(Math.random() * 11);
     let randomy = Math.floor(Math.random() * 11);
@@ -61,6 +59,11 @@ const gameloop = (() => {
     }
   }
 
+  // check cycle for if the game is over
+  const enemygrid = document.getElementById("enemygrid");
+  enemygrid.addEventListener("click", () => {
+    enemyboard.boardStatus();
+  });
   function startGame() {
     plotEnemyBoats();
   }

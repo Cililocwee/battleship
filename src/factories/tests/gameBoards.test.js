@@ -115,17 +115,19 @@ test("positionBoats - 5. Non-origin positioning - positionBoats correctly modifi
 
 test("positionBoats - 6. Valid coordinates - positionBoats won't accept coordinates off the plane", () => {
   let game1 = boardFactory();
-  expect(game1.positionBoats("patrolboat", [11, 0], "horizontal")).toBe(
-    "Error: Off the map"
-  );
+  expect(game1.positionBoats("patrolboat", [11, 0], "horizontal")).toEqual([
+    "Error: Off the map",
+    false,
+  ]);
 });
 
 test("positionBoats - 7. Can't overlap boats", () => {
   let game1 = boardFactory();
   game1.positionBoats("carrier", [0, 0], "horizontal");
-  expect(game1.positionBoats("patrolboat", [0, 0], "horizontal")).toBe(
-    "Error: Overlapping boats"
-  );
+  expect(game1.positionBoats("patrolboat", [0, 0], "horizontal")).toEqual([
+    "Error: Overlapping boats",
+    true,
+  ]);
 });
 
 test("recieveAttack - 1. recieveAttack correctly triggers hit() in occupied space's boat", () => {
