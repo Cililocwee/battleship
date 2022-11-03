@@ -111,16 +111,25 @@ const gridSetup = (function () {
     }
   }
 
-  // formats coordinates based on box ID
-  function showCoords(event) {
-    //   console.log(this.id);
+  function coordsToId(coords) {
+    // ['[1' , '1]'] = [1,1]
+    let splitCoords = coords.split(", ");
+    let formattedCoords = splitCoords.join("-");
+    return formattedCoords;
+  }
+
+  function idToCoords() {
     // [1,1] = ['[1' , '1]']
     let splitCoords = this.id.split("-");
     let formattedCoords = splitCoords.join(", ");
-    console.log(formattedCoords);
-    document.getElementById("bowcoords").innerText = formattedCoords;
     return formattedCoords;
   }
+
+  // formats coordinates based on box ID
+  function showCoords() {
+    document.getElementById("bowcoords").innerText = idToCoords;
+  }
+
   const enemygrid = document.getElementById("enemygrid");
   const enemyLabelTop = document.getElementById("enemylabeltop");
   const enemyLabelLeft = document.getElementById("enemylabelleft");
@@ -143,6 +152,8 @@ const gridSetup = (function () {
   }
 
   return {
+    idToCoords,
+    coordsToId,
     displayGrid,
     displayLabels,
     makeEnemyBoard,

@@ -23,23 +23,19 @@ const gameloop = (() => {
     }
   }
 
-  // need to pass random numbers into the coords
-  // if recieve something back, try again
-
-  function plotEnemyBoats() {
-    for (let model in enemyboard.occupiedList) {
-      while (enemyboard.occupiedList[model].length == 0) {
-        enemyboard.positionBoats(model, randomcoords(), randomorient());
-      }
-    }
-  }
-
-  //plotEnemyBoats();
+  // function plotEnemyBoats() {
+  //   enemyboard.positionBoats("carrier", randomcoords, randomorient);
+  //   enemyboard.positionBoats("battleship", randomcoords, randomorient);
+  //   enemyboard.positionBoats("destroyer", randomcoords, randomorient);
+  //   enemyboard.positionBoats("submarine", randomcoords, randomorient);
+  //   enemyboard.positionBoats("patrol", randomcoords, randomorient);
+  // }
 
   // set up player's board
   const playerboard = boardFactory();
 
   // giving hit functionality to the enemygrid
+  // DOM-RELATED
   function activateEnemyCells() {
     let enemyOccupied = enemyboard.occupiedList;
 
@@ -59,22 +55,25 @@ const gameloop = (() => {
     }
   }
 
+  // REFACTOR THIS
   // check cycle for if the game is over
   const enemygrid = document.getElementById("enemygrid");
   enemygrid.addEventListener("click", () => {
+    // true = game over
     enemyboard.boardStatus();
   });
-  function startGame() {
-    plotEnemyBoats();
-  }
 
-  function resetGame() {
-    for (let model in enemyboard.occupiedList) {
-      enemyboard.occupiedList[model] = [];
-    }
-  }
+  // function startGame() {
+  //   plotEnemyBoats();
+  // }
 
-  return { playerboard, enemyboard, activateEnemyCells, startGame, resetGame };
+  // function resetGame() {
+  //   for (let model in enemyboard.occupiedList) {
+  //     enemyboard.occupiedList[model] = [];
+  //   }
+  // }
+
+  return { playerboard, enemyboard, activateEnemyCells };
 })();
 
 export default gameloop;

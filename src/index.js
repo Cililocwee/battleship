@@ -18,6 +18,7 @@ const grid = document.getElementById("enemygrid");
 const labelTop = document.getElementById("enemylabeltop");
 const labelLeft = document.getElementById("enemylabelleft");
 
+// Functionality for the Start Button
 startBtn.addEventListener("click", () => {
   gameloop.resetGame();
   grid.replaceChildren();
@@ -28,10 +29,10 @@ startBtn.addEventListener("click", () => {
   gameloop.startGame();
   // Enemy cells can be hit or missed
   gameloop.activateEnemyCells();
-  console.log(enemyboard.report()[0]);
+  console.log(enemyboard.computerFleet);
 });
 
-// adds functionality to submit button
+// Functionality to submit button
 const submitBtn = document.getElementById("submit");
 const shipSelection = document.getElementById("ships");
 
