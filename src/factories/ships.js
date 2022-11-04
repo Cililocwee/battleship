@@ -2,6 +2,7 @@ function Ship(model, orientation) {
   this.model = model;
   this.orientation = orientation;
   this.status = "afloat";
+  this.position = [];
 
   switch (model) {
     case "carrier":
@@ -34,8 +35,8 @@ function Ship(model, orientation) {
   };
 }
 
-function shipYard(model, orientation, bow) {
-  return new Ship(model, orientation, bow);
+function shipYard(model, orientation) {
+  return new Ship(model, orientation);
 }
 
 export default shipYard;

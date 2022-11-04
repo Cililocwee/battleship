@@ -1,6 +1,6 @@
 const gridSetup = (function () {
   // creates IDs for the box divs
-  function makeId(iterator) {
+  function makeIdForBoxes(iterator) {
     let x;
     let y;
 
@@ -68,17 +68,18 @@ const gridSetup = (function () {
   }
 
   // creates box divs for a grid
-  function displayGrid(target) {
+  function renderGrid(target) {
     for (let i = 0; i < 144; i++) {
       let box = document.createElement("div");
       box.classList.add("box");
 
       // box.id = `box-${idVariable}`;
-      let idVariable = makeId(i);
+      let idVariable = makeIdForBoxes(i);
 
       box.id = `[${idVariable[0]}-${idVariable[1]}]`;
       if (target.id === "playergrid") {
-        box.onclick = showCoords;
+        // box.onclick = showCoords;
+        box.onclick = console.log(target.id);
       }
 
       if (target.id === "enemygrid") {
@@ -96,7 +97,7 @@ const gridSetup = (function () {
   }
 
   // constructs the actual labels (grid coordinates)
-  function displayLabels(target, flag) {
+  function renderLabels(target, flag) {
     for (let i = 0; i < 12; i++) {
       let box = document.createElement("div");
       box.classList.add("box");
@@ -111,6 +112,7 @@ const gridSetup = (function () {
     }
   }
 
+  // returns id
   function coordsToId(coords) {
     // ['[1' , '1]'] = [1,1]
     let splitCoords = coords.split(", ");
@@ -118,6 +120,7 @@ const gridSetup = (function () {
     return formattedCoords;
   }
 
+  // returns coords
   function idToCoords() {
     // [1,1] = ['[1' , '1]']
     let splitCoords = this.id.split("-");
@@ -125,37 +128,36 @@ const gridSetup = (function () {
     return formattedCoords;
   }
 
-  // formats coordinates based on box ID
+  // displays coords on page (when player selecting where to put ship)
   function showCoords() {
-    document.getElementById("bowcoords").innerText = idToCoords;
+    document.getElementById("bowcoords").innerText = idToCoords();
   }
 
-  const enemygrid = document.getElementById("enemygrid");
-  const enemyLabelTop = document.getElementById("enemylabeltop");
-  const enemyLabelLeft = document.getElementById("enemylabelleft");
-
   function makeEnemyBoard() {
-    displayGrid(enemygrid);
-    displayLabels(enemyLabelTop, 0);
-    displayLabels(enemyLabelLeft, 1);
+    const enemygrid = document.getElementById("enemygrid");
+    const enemyLabelTop = document.getElementById("enemylabeltop");
+    const enemyLabelLeft = document.getElementById("enemylabelleft");
+
+    renderGrid(enemygrid);
+    renderLabels(enemyLabelTop, 0);
+    renderLabels(enemyLabelLeft, 1);
   }
 
   function makePlayerBoard() {
     const playergrid = document.getElementById("playergrid");
-
     const playerLabelTop = document.getElementById("playerlabeltop");
     const playerLabelLeft = document.getElementById("playerlabelleft");
 
-    gridSetup.displayGrid(playergrid);
-    gridSetup.displayLabels(playerLabelTop, 0);
-    gridSetup.displayLabels(playerLabelLeft, 1);
+    renderGrid(playergrid);
+    renderLabels(playerLabelTop, 0);
+    renderLabels(playerLabelLeft, 1);
   }
 
   return {
     idToCoords,
     coordsToId,
-    displayGrid,
-    displayLabels,
+    renderGrid,
+    renderLabels,
     makeEnemyBoard,
     makePlayerBoard,
   };

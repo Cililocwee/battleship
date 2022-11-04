@@ -1,7 +1,6 @@
 import css from "./style.css";
-import gridSetup from "./factories/gridSetup";
-import gameloop from "./factories/game";
-import tools from "./factories/utilities";
+import gridSetup from "./grid/gridSetup";
+import gameloop from "./game";
 
 /********** GAME SETUP  ************/
 // make each player's board (grid)
@@ -36,6 +35,7 @@ startBtn.addEventListener("click", () => {
 const submitBtn = document.getElementById("submit");
 const shipSelection = document.getElementById("ships");
 
+// ! WILL NOT WORK NOW THAT TOOLS IS GONE
 submitBtn.addEventListener("click", () => {
   let shiptype = tools.getShipType();
   let orientinput = tools.getOrientation();
@@ -47,7 +47,7 @@ submitBtn.addEventListener("click", () => {
   } else {
     playerboard.positionBoats(shiptype, coordinput, orientinput);
   }
-  console.log(playerboard.occupiedList);
+  // console.log(playerboard.occupiedList);
   tools.colorBoard(playerboard.report()[0][shiptype]);
 
   // removes ships from list
