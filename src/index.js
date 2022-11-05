@@ -1,6 +1,6 @@
 import css from "./style.css";
 import gridSetup from "./grid/gridSetup";
-import gameloop from "./game";
+import gameloop from "./gameLogic";
 
 /********** GAME SETUP  ************/
 // make each player's board (grid)
@@ -19,15 +19,18 @@ const labelLeft = document.getElementById("enemylabelleft");
 
 // Functionality for the Start Button
 startBtn.addEventListener("click", () => {
-  gameloop.resetGame();
+  // gameloop.resetGame();
   grid.replaceChildren();
   labelTop.replaceChildren();
   labelLeft.replaceChildren();
 
   gridSetup.makeEnemyBoard();
   gameloop.startGame();
+
   // Enemy cells can be hit or missed
   gameloop.activateEnemyCells();
+  let computerBoxes = document.querySelectorAll("#enemygrid .box");
+  gridSetup.plotComputerBoatsToGrid(computerBoxes, enemyboard);
   console.log(enemyboard.fleet);
 });
 

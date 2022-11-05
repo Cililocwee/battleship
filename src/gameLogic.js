@@ -22,6 +22,7 @@ const gameloop = (() => {
     }
   }
 
+  // ! THIS NEEDS TO BE IN gridSetup
   // giving hit functionality to the enemygrid
   // * DOM-RELATED
   function activateEnemyCells() {
@@ -43,7 +44,7 @@ const gameloop = (() => {
     }
   }
 
-  // ! REFACTOR THIS
+  // ! THIS NEEDS TO BE IN gridSetup
   // TODO WIP
   // check cycle for if the game is over
   const enemygrid = document.getElementById("enemygrid");
@@ -93,21 +94,10 @@ const gameloop = (() => {
     plotEnemyBoats();
   }
 
-  /*
-  TODO Clear enemy boats from array
-  TODO Clear enemy boats from grid 
-  TODO Clear player boats */
-  function resetGame() {
-    for (let model in computerBoard.occupiedList) {
-      computerBoard.occupiedList[model] = [];
-    }
-  }
-
   return {
     playerBoard,
     computerBoard,
     activateEnemyCells,
-    resetGame,
     startGame,
     randomcoords,
   };

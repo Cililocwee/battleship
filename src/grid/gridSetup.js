@@ -1,3 +1,5 @@
+// DOM related grid rendering
+
 const gridSetup = (function () {
   // creates IDs for the box divs
   function makeIdForBoxes(iterator) {
@@ -112,6 +114,7 @@ const gridSetup = (function () {
     }
   }
 
+  // * Utility
   // returns id
   function coordsToId(coords) {
     // ['[1' , '1]'] = [1,1]
@@ -120,17 +123,13 @@ const gridSetup = (function () {
     return formattedCoords;
   }
 
+  // * Utility
   // returns coords
   function idToCoords() {
     // [1,1] = ['[1' , '1]']
     let splitCoords = this.id.split("-");
     let formattedCoords = splitCoords.join(", ");
     return formattedCoords;
-  }
-
-  // displays coords on page (when player selecting where to put ship)
-  function showCoords() {
-    document.getElementById("bowcoords").innerText = idToCoords();
   }
 
   function makeEnemyBoard() {
@@ -153,6 +152,26 @@ const gridSetup = (function () {
     renderLabels(playerLabelLeft, 1);
   }
 
+  // adds enemy boats to DOM grid
+  function plotComputerBoatsToGrid(nodelist, board) {
+    for (let i = 0; i < board.occupied.length; i++) {
+      for (let j = 0; j < nodelist.length; j++) {
+        // console.log(coordsToId(board.occupied[i]));
+        // console.log(nodelist[j].id);
+        if (
+          JSON.stringify(board.occupied[i]) ===
+          nodelist[j].id.split("-").join(",")
+        ) {
+          nodelist[j].classList.add("enemyoccupied");
+        }
+      }
+    }
+  }
+  // displays coords on page (when player selecting where to put ship)
+  function showCoords() {
+    document.getElementById("bowcoords").innerText = idToCoords();
+  }
+
   return {
     idToCoords,
     coordsToId,
@@ -160,6 +179,7 @@ const gridSetup = (function () {
     renderLabels,
     makeEnemyBoard,
     makePlayerBoard,
+    plotComputerBoatsToGrid,
   };
 })();
 
