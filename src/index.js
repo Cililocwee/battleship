@@ -8,8 +8,8 @@ import gameloop from "./game";
 gridSetup.makePlayerBoard();
 
 // set up each player's board (game)
-const enemyboard = gameloop.enemyboard;
-const playerboard = gameloop.playerboard;
+const enemyboard = gameloop.computerBoard;
+const playerboard = gameloop.playerBoard;
 
 // plot enemy ships
 const startBtn = document.getElementById("start");
@@ -28,7 +28,7 @@ startBtn.addEventListener("click", () => {
   gameloop.startGame();
   // Enemy cells can be hit or missed
   gameloop.activateEnemyCells();
-  console.log(enemyboard.computerFleet);
+  console.log(enemyboard.fleet);
 });
 
 // Functionality to submit button

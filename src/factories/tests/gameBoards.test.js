@@ -10,19 +10,11 @@ test("giveBoatsAPosition - 1. vertical: giveBoatsAPosition correctly modifies bo
   let board = boardFactory();
   let patrolboat = shipYard("patrolboat", "vertical");
   board.giveBoatsAPosition(patrolboat, [0, 0]);
-  expect(board.fleet).toEqual({
-    carrier: [null, []],
-    battleship: [null, []],
-    destroyer: [null, []],
-    submarine: [null, []],
-    patrolboat: [
-      "vertical",
-      [
-        [0, 0],
-        [0, 1],
-      ],
-    ],
-  });
+  expect(board.fleet.patrolboat[0]).toBe("vertical");
+  expect(board.fleet.patrolboat[1]).toEqual([
+    [0, 0],
+    [0, 1],
+  ]);
 });
 
 test("giveBoatsAPosition - 2. horizontal: giveBoatsAPosition correctly modifies board.occupied", () => {
@@ -148,8 +140,8 @@ test("Can tell if a coordinate is occupied", () => {
 
   board.giveBoatsAPosition(patrolboat, [0, 0]);
 
-  expect(board.checkIfCoordIsOccupied([0, 0])).toBe(true);
-  expect(board.checkIfCoordIsOccupied([9, 9])).toBe(false);
+  expect(board.checkIfCoordIsOccupied([0, 0])[1]).toBe(true);
+  expect(board.checkIfCoordIsOccupied([9, 9])[1]).toBe(false);
 });
 
 test("Grid has correct positions", () => {

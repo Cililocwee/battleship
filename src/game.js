@@ -15,13 +15,9 @@ const gameloop = (() => {
   }
 
   function randomorient() {
-    let toincoss = Math.random();
-    if (toincoss < 0.5) {
-      // console.log("vertical");
+    if (Math.random() < 0.5) {
       return "vertical";
-    }
-    if (toincoss >= 0.5) {
-      // console.log("horizontal");
+    } else {
       return "horizontal";
     }
   }
@@ -48,6 +44,7 @@ const gameloop = (() => {
   }
 
   // ! REFACTOR THIS
+  // TODO WIP
   // check cycle for if the game is over
   const enemygrid = document.getElementById("enemygrid");
   enemygrid.addEventListener("click", () => {
@@ -56,18 +53,28 @@ const gameloop = (() => {
   });
 
   function plotEnemyBoats() {
-    let carrier = shipYard("carrier", randomorient);
-    let battleship = shipYard("battleship", randomorient);
-    let destroyer = shipYard("destroyer", randomorient);
-    let submarine = shipYard("submarine", randomorient);
-    let patrolboat = shipYard("patrolboat", randomorient);
+    let carrier = shipYard("carrier", randomorient());
+    let battleship = shipYard("battleship", randomorient());
+    let destroyer = shipYard("destroyer", randomorient());
+    let submarine = shipYard("submarine", randomorient());
+    let patrolboat = shipYard("patrolboat", randomorient());
+    let tryFlag = true;
 
-    computerBoard.giveBoatsAPosition(carrier, randomcoords());
-    computerBoard.giveBoatsAPosition(battleship, randomcoords());
-    computerBoard.giveBoatsAPosition(destroyer, randomcoords());
-    computerBoard.giveBoatsAPosition(submarine, randomcoords());
-    computerBoard.giveBoatsAPosition(patrolboat, randomcoords());
+    while (tryFlag) {
+      computerBoard.occupied = [];
+      computerBoard.giveBoatsAPosition(carrier, randomcoords());
+      computerBoard.giveBoatsAPosition(battleship, randomcoords());
+      computerBoard.giveBoatsAPosition(destroyer, randomcoords());
+      computerBoard.giveBoatsAPosition(submarine, randomcoords());
+      computerBoard.giveBoatsAPosition(patrolboat, randomcoords());
+      if (computerBoard.occupied.length == 17) {
+        tryFlag = false;
+      }
+    }
 
+    computerBoard.grid = Array(12)
+      .fill(null)
+      .map(() => Array(12).fill(0));
     computerBoard.putBoatsOnGrid(computerBoard.fleet, carrier);
     computerBoard.putBoatsOnGrid(computerBoard.fleet, battleship);
     computerBoard.putBoatsOnGrid(computerBoard.fleet, destroyer);
@@ -75,6 +82,7 @@ const gameloop = (() => {
     computerBoard.putBoatsOnGrid(computerBoard.fleet, patrolboat);
 
     console.log(computerBoard.occupied);
+    console.table(computerBoard.grid);
   }
 
   /*
@@ -101,6 +109,7 @@ const gameloop = (() => {
     activateEnemyCells,
     resetGame,
     startGame,
+    randomcoords,
   };
 })();
 
