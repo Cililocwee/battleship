@@ -1,6 +1,6 @@
 const cellFunction = (() => {
   // nodelist
-  function colorBoard(boat) {
+  function updateDOMToShowPlayerBoats(boat) {
     const playerboxes = document.querySelectorAll("#playergrid .box");
 
     for (let i = 0; i < playerboxes.length; i++) {
@@ -11,12 +11,6 @@ const cellFunction = (() => {
           occupy(playerboxes[i]);
         }
       }
-
-      //   for (let j = 0; j < 5; j++) {
-      //     if (formattedCoords == JSON.stringify(boat[j])) {
-      //       occupy(playerboxes[i]);
-      //     }
-      //   }
     }
   }
 
@@ -47,7 +41,13 @@ const cellFunction = (() => {
     targetnode.classList.add("occupiedsunk");
   }
 
-  return { colorBoard, getShipType, getCoordinates, getOrientation, occupy };
+  return {
+    updateDOMToShowPlayerBoats,
+    getShipType,
+    getCoordinates,
+    getOrientation,
+    occupy,
+  };
 })();
 
 export default cellFunction;

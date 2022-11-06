@@ -54,7 +54,7 @@ submitBtn.addEventListener("click", () => {
       document
         .getElementsByClassName("selected")[0]
         .classList.toggle("selected");
-      cellFunction.colorBoard(carrier);
+      cellFunction.updateDOMToShowPlayerBoats(carrier);
       break;
     case "battleship":
       const battleship = shipYard(shiptype, orientinput);
@@ -63,7 +63,7 @@ submitBtn.addEventListener("click", () => {
       document
         .getElementsByClassName("selected")[0]
         .classList.toggle("selected");
-      cellFunction.colorBoard(battleship);
+      cellFunction.updateDOMToShowPlayerBoats(battleship);
       break;
     case "destroyer":
       const destroyer = shipYard(shiptype, orientinput);
@@ -72,7 +72,7 @@ submitBtn.addEventListener("click", () => {
       document
         .getElementsByClassName("selected")[0]
         .classList.toggle("selected");
-      cellFunction.colorBoard(destroyer);
+      cellFunction.updateDOMToShowPlayerBoats(destroyer);
       break;
     case "submarine":
       const submarine = shipYard(shiptype, orientinput);
@@ -81,7 +81,7 @@ submitBtn.addEventListener("click", () => {
       document
         .getElementsByClassName("selected")[0]
         .classList.toggle("selected");
-      cellFunction.colorBoard(submarine);
+      cellFunction.updateDOMToShowPlayerBoats(submarine);
       break;
     case "patrolboat":
       const patrolboat = shipYard(shiptype, orientinput);
@@ -90,7 +90,7 @@ submitBtn.addEventListener("click", () => {
       document
         .getElementsByClassName("selected")[0]
         .classList.toggle("selected");
-      cellFunction.colorBoard(patrolboat);
+      cellFunction.updateDOMToShowPlayerBoats(patrolboat);
       break;
   }
 

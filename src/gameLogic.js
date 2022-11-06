@@ -1,6 +1,9 @@
 import boardFactory from "./factories/gameBoards";
 import shipYard from "./factories/ships";
 
+// ! Falling into the same issue again, relying on DOM instead of playerboard.grid/hitlist/occupied/misslist
+// ! Update the DOM based on whats going on in the game
+// ! Don't use the DOM to make logic choices
 const gameloop = (() => {
   // initiating game
 
@@ -51,7 +54,6 @@ const gameloop = (() => {
     computerBoard.putBoatsOnGrid(computerBoard.fleet, submarine);
     computerBoard.putBoatsOnGrid(computerBoard.fleet, patrolboat);
 
-    console.log(computerBoard.occupied);
     console.table(computerBoard.grid);
   }
 
@@ -83,9 +85,6 @@ const gameloop = (() => {
         JSON.parse(playerCells[blindChoice].id.split("-").join(","))
       );
     }
-    console.log(playerCells.length);
-    console.log(playerBoard.missList);
-    console.log(playerBoard.hitList);
   }
   return {
     playerBoard,

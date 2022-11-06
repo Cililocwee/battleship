@@ -72,11 +72,9 @@ function Board() {
       }
     }
     if (!errorFlag) {
-      // console.log(coords);
       this.fleet[ship.model][1] = coords;
       this.fleet[ship.model][0] = ship.orientation;
       ship.position.push(...coords);
-      // console.log(this.fleet[ship.model]);
       this.occupied.push(...coords);
     } else {
       return false;
@@ -210,16 +208,13 @@ function Board() {
 
     if (rehit != -1) {
       // NO REHITS
-      // console.log("rehit");
       return false;
     } else if (hitStatus != -1) {
       // HIT
-      // console.log("Hit");
       this.hitList.push(coords);
       return true;
     } else {
       // MISS
-      // console.log("miss");
       this.missList.push(coords);
       return false;
     }
@@ -231,8 +226,6 @@ function Board() {
 
   // TODO Works in testing, not in implementation
   this.boardStatus = function () {
-    // console.log(`Hitlist: ${this.hitList}`);
-    // console.log(`Occupied: ${this.occupied}`);
     if (this.hitList.length == this.occupied.length) {
       // GAME OVER
       console.log("Game Over");

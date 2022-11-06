@@ -1,6 +1,7 @@
 import gameloop from "../gameLogic";
 // DOM related grid rendering
 
+// ! This module is really guilty of using DOMlogic
 const gridSetup = (function () {
   // creates IDs for the box divs
   function makeIdForBoxes(iterator) {
@@ -88,14 +89,33 @@ const gridSetup = (function () {
 
       if (target.id === "enemygrid") {
         box.addEventListener("click", () => {
+          if (box.classList.contains("miss")) {
+            return;
+          }
+          if (box.classList.contains("occupiedhit")) {
+            return;
+          }
+
           if (box.classList.contains("enemyoccupied")) {
+            // modify hitlist
+            gameloop.computerBoard.recieveAttack(
+              JSON.parse(box.id.split("-").join(","))
+            );
+
+            // * Need a function to check occupied hit and add class .occupiedhit
             box.classList.add("occupiedhit");
           } else {
+            // modify misslist
+            gameloop.computerBoard.recieveAttack(
+              JSON.parse(box.id.split("-").join(","))
+            );
             box.classList.add("miss");
           }
+          // debugging - follow the progress
+          console.log(gameloop.computerBoard);
           gameloop.computerFiresAShot();
-          // ! CHECKING THE FUNCTIONALITY
-          // ! MOVE TO GRID FROM GAMELOOP
+
+          // TODO needs to accurately show if game is over, currently not working right
           gameloop.computerBoard.boardStatus();
         });
       }
