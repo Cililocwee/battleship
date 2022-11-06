@@ -63,11 +63,36 @@ const gameloop = (() => {
     plotEnemyBoats();
   }
 
+  // TODO Make computer fire at player after player fires
+
+  // * Updates misslist, hitlist, dynamically chooses boxes without hit or miss
+  function computerFiresAShot() {
+    let playerCells = document.querySelectorAll(
+      "#playergrid .box:not(.occupiedhit):not(.miss)"
+    );
+    let blindChoice = Math.floor(Math.random() * playerCells.length);
+
+    if (playerCells[blindChoice].classList.contains("occupiedalive")) {
+      playerCells[blindChoice].classList.add("occupiedhit");
+      playerBoard.hitList.push(
+        JSON.parse(playerCells[blindChoice].id.split("-").join(","))
+      );
+    } else {
+      playerCells[blindChoice].classList.add("miss");
+      playerBoard.missList.push(
+        JSON.parse(playerCells[blindChoice].id.split("-").join(","))
+      );
+    }
+    console.log(playerCells.length);
+    console.log(playerBoard.missList);
+    console.log(playerBoard.hitList);
+  }
   return {
     playerBoard,
     computerBoard,
     startGame,
     randomcoords,
+    computerFiresAShot,
   };
 })();
 

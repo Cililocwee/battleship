@@ -93,6 +93,7 @@ const gridSetup = (function () {
           } else {
             box.classList.add("miss");
           }
+          gameloop.computerFiresAShot();
           // ! CHECKING THE FUNCTIONALITY
           // ! MOVE TO GRID FROM GAMELOOP
           gameloop.computerBoard.boardStatus();

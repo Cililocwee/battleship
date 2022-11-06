@@ -5,23 +5,23 @@ import shipYard from "./factories/ships";
 import cellFunction from "./grid/cells";
 
 /********** GAME SETUP  ************/
-// make each player's board (grid)
-// gridSetup.makeEnemyBoard();
+// Allows player to set up board
 gridSetup.makePlayerBoard();
 
 // set up each player's board (game)
 const enemyboard = gameloop.computerBoard;
 const playerboard = gameloop.playerBoard;
 
-// plot enemy ships
+// variables for later use in setting up the game
 const startBtn = document.getElementById("start");
 const grid = document.getElementById("enemygrid");
 const labelTop = document.getElementById("enemylabeltop");
 const labelLeft = document.getElementById("enemylabelleft");
 
-// Functionality for the Start Button
+// Functionality for the Start Button (also resets a game in progress)
+// TODO change text (Start Game) to Reset Game after initialization
+// TODO make player grid reset on click too
 startBtn.addEventListener("click", () => {
-  // gameloop.resetGame();
   grid.replaceChildren();
   labelTop.replaceChildren();
   labelLeft.replaceChildren();
@@ -40,7 +40,7 @@ startBtn.addEventListener("click", () => {
 const submitBtn = document.getElementById("submit");
 const shipSelection = document.getElementById("ships");
 
-// ! WILL NOT WORK NOW THAT TOOLS IS GONE
+// Functionality for the submit button
 submitBtn.addEventListener("click", () => {
   let shiptype = cellFunction.getShipType();
   let orientinput = cellFunction.getOrientation();
@@ -54,6 +54,7 @@ submitBtn.addEventListener("click", () => {
       document
         .getElementsByClassName("selected")[0]
         .classList.toggle("selected");
+      cellFunction.colorBoard(carrier);
       break;
     case "battleship":
       const battleship = shipYard(shiptype, orientinput);
@@ -62,6 +63,7 @@ submitBtn.addEventListener("click", () => {
       document
         .getElementsByClassName("selected")[0]
         .classList.toggle("selected");
+      cellFunction.colorBoard(battleship);
       break;
     case "destroyer":
       const destroyer = shipYard(shiptype, orientinput);
@@ -70,6 +72,7 @@ submitBtn.addEventListener("click", () => {
       document
         .getElementsByClassName("selected")[0]
         .classList.toggle("selected");
+      cellFunction.colorBoard(destroyer);
       break;
     case "submarine":
       const submarine = shipYard(shiptype, orientinput);
@@ -78,6 +81,7 @@ submitBtn.addEventListener("click", () => {
       document
         .getElementsByClassName("selected")[0]
         .classList.toggle("selected");
+      cellFunction.colorBoard(submarine);
       break;
     case "patrolboat":
       const patrolboat = shipYard(shiptype, orientinput);
@@ -86,11 +90,9 @@ submitBtn.addEventListener("click", () => {
       document
         .getElementsByClassName("selected")[0]
         .classList.toggle("selected");
+      cellFunction.colorBoard(patrolboat);
       break;
   }
-
-  // // console.log(playerboard.occupiedList);
-  // cellFunction.colorBoard(playerboard.report()[0][shiptype]);
 
   // removes ships from list
   shipSelection[shipSelection.selectedIndex].remove();
