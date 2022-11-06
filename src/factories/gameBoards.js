@@ -75,6 +75,7 @@ function Board() {
       // console.log(coords);
       this.fleet[ship.model][1] = coords;
       this.fleet[ship.model][0] = ship.orientation;
+      ship.position.push(...coords);
       // console.log(this.fleet[ship.model]);
       this.occupied.push(...coords);
     } else {
@@ -228,14 +229,17 @@ function Board() {
     return ship.hp;
   };
 
+  // TODO Works in testing, not in implementation
   this.boardStatus = function () {
     // console.log(`Hitlist: ${this.hitList}`);
     // console.log(`Occupied: ${this.occupied}`);
     if (this.hitList.length == this.occupied.length) {
       // GAME OVER
+      console.log("Game Over");
       return true;
     } else {
       // CONTINUE
+      console.log("Continue");
       return false;
     }
   };

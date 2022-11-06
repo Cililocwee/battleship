@@ -1,3 +1,4 @@
+import gameloop from "../gameLogic";
 // DOM related grid rendering
 
 const gridSetup = (function () {
@@ -69,7 +70,7 @@ const gridSetup = (function () {
     return [x, y];
   }
 
-  // creates box divs for a grid
+  // creates box divs for a grid with onclicks/eventlisteners
   function renderGrid(target) {
     for (let i = 0; i < 144; i++) {
       let box = document.createElement("div");
@@ -80,8 +81,9 @@ const gridSetup = (function () {
 
       box.id = `[${idVariable[0]}-${idVariable[1]}]`;
       if (target.id === "playergrid") {
-        // box.onclick = showCoords;
-        box.onclick = console.log(target.id);
+        box.addEventListener("click", () => {
+          box.classList.toggle("selected");
+        });
       }
 
       if (target.id === "enemygrid") {
@@ -91,6 +93,9 @@ const gridSetup = (function () {
           } else {
             box.classList.add("miss");
           }
+          // ! CHECKING THE FUNCTIONALITY
+          // ! MOVE TO GRID FROM GAMELOOP
+          gameloop.computerBoard.boardStatus();
         });
       }
 
@@ -167,9 +172,35 @@ const gridSetup = (function () {
       }
     }
   }
+
+  // adds labels occupied cells
+  function activateEnemyCells() {
+    let enemyOccupied = gameloop.computerBoard.occupiedList;
+
+    // get ids from coords
+    let idlookup = [];
+
+    for (let thing in enemyOccupied) {
+      for (let i = 0; i < enemyOccupied[thing].length; i++) {
+        idlookup.push(
+          JSON.stringify(enemyOccupied[thing][i]).split(",").join("-")
+        );
+      }
+    }
+
+    for (let h = 0; h < idlookup.length; h++) {
+      document.getElementById(idlookup[h]).classList.add("enemyoccupied");
+    }
+  }
+
+  // ! Currently unimplemented
   // displays coords on page (when player selecting where to put ship)
   function showCoords() {
-    document.getElementById("bowcoords").innerText = idToCoords();
+    let splitCoords = this.id.split("-");
+    let formattedCoords = splitCoords.join(", ");
+    console.log(formattedCoords);
+    document.getElementById("bowcoords").innerText = formattedCoords;
+    return formattedCoords;
   }
 
   return {
@@ -180,6 +211,7 @@ const gridSetup = (function () {
     makeEnemyBoard,
     makePlayerBoard,
     plotComputerBoatsToGrid,
+    activateEnemyCells,
   };
 })();
 

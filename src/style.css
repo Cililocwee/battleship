@@ -121,3 +121,7 @@ h1 {
   flex-direction: column;
   gap: 10px;
 }
+
+.selected {
+  background-color: var(--grid-lines);
+}

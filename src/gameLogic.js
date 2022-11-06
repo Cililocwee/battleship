@@ -22,37 +22,6 @@ const gameloop = (() => {
     }
   }
 
-  // ! THIS NEEDS TO BE IN gridSetup
-  // giving hit functionality to the enemygrid
-  // * DOM-RELATED
-  function activateEnemyCells() {
-    let enemyOccupied = computerBoard.occupiedList;
-
-    // get ids from coords
-    let idlookup = [];
-
-    for (let thing in enemyOccupied) {
-      for (let i = 0; i < enemyOccupied[thing].length; i++) {
-        idlookup.push(
-          JSON.stringify(enemyOccupied[thing][i]).split(",").join("-")
-        );
-      }
-    }
-
-    for (let h = 0; h < idlookup.length; h++) {
-      document.getElementById(idlookup[h]).classList.add("enemyoccupied");
-    }
-  }
-
-  // ! THIS NEEDS TO BE IN gridSetup
-  // TODO WIP
-  // check cycle for if the game is over
-  const enemygrid = document.getElementById("enemygrid");
-  enemygrid.addEventListener("click", () => {
-    // true = game over
-    computerBoard.boardStatus();
-  });
-
   function plotEnemyBoats() {
     let carrier = shipYard("carrier", randomorient());
     let battleship = shipYard("battleship", randomorient());
@@ -97,7 +66,6 @@ const gameloop = (() => {
   return {
     playerBoard,
     computerBoard,
-    activateEnemyCells,
     startGame,
     randomcoords,
   };
