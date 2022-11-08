@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Battleship</title>
     <link rel="stylesheet" href="../src/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=VT323"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
@@ -33,7 +37,7 @@
           <ol>
             <li>Place your ships</li>
             <li>Select a cell on the enemy's board to attack</li>
-            <li>If it hits, it turns red. If it misses, it turns blue.</li>
+            <li>If it hits, it turns red. If it misses, it crosses out.</li>
             <li>
               After each one of your turns, the enemy gets a turn to attack you.
             </li>
@@ -43,21 +47,15 @@
         <div class="container" id="gamecontrols">
           <fieldset>
             <legend>Choose your ship:</legend>
-            <div>
+            <div class="shipdiv">
               <select name="ships" id="ships">
                 <option value="carrier">Carrier</option>
                 <option value="battleship">Battleship</option>
                 <option value="destroyer">Destroyer</option>
                 <option value="submarine">Submarine</option>
                 <option value="patrolboat">Patrol Boat</option>
+                <option value="select">---</option>
               </select>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>Bow coordinates:</legend>
-            <div class="coorddisplay">
-              <h4 id="bowcoords">Please click on the grid</h4>
             </div>
           </fieldset>
 
@@ -83,8 +81,10 @@
           </fieldset>
 
           <button type="submit" id="submit">Submit</button>
-
-          <button id="start">Game Start</button>
+          <div class="gamebtns">
+            <button id="start">Game Start</button>
+            <button id="reset" class="inert">Reset</button>
+          </div>
         </div>
       </div>
     </div>

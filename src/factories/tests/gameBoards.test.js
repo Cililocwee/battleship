@@ -1,225 +1,163 @@
 import boardFactory from "../gameBoards";
+import shipYard from "../ships";
 
 test("boardFactory - Creates boards succesfully", () => {
-  const board = boardFactory();
-  const checklist = {
-    carrier: [],
-    battleship: [],
-    destroyer: [],
-    submarine: [],
-    patrolboat: [],
-  };
-  expect(board.occupiedList).toEqual(expect.objectContaining(checklist));
+  let board = boardFactory();
+  expect(board).toEqual(expect.any(Object));
 });
 
-test("positionBoats - 1. Carrier-vertical: positionBoats correctly modifies occupiedList", () => {
-  let game1 = boardFactory();
-  game1.positionBoats("carrier", [0, 0], "vertical");
-  expect(game1.occupiedList).toEqual({
-    carrier: [
-      [0, 0],
-      [0, 1],
-      [0, 2],
-      [0, 3],
-      [0, 4],
-    ],
-    battleship: [],
-    destroyer: [],
-    submarine: [],
-    patrolboat: [],
-  });
+test("giveBoatsAPosition - 1. vertical: giveBoatsAPosition correctly modifies board.occupied", () => {
+  let board = boardFactory();
+  let patrolboat = shipYard("patrolboat", "vertical");
+  board.giveBoatsAPosition(patrolboat, [0, 0]);
+  expect(board.fleet.patrolboat[0]).toBe("vertical");
+  expect(board.fleet.patrolboat[1]).toEqual([
+    [0, 0],
+    [0, 1],
+  ]);
 });
 
-test("positionBoats - 2. Battleship-vertical: positionBoats correctly modifies occupiedList", () => {
-  let game1 = boardFactory();
-  game1.positionBoats("battleship", [0, 0], "vertical");
-  expect(game1.occupiedList).toEqual({
-    carrier: [],
-    battleship: [
-      [0, 0],
-      [0, 1],
-      [0, 2],
-      [0, 3],
-    ],
-    destroyer: [],
-    submarine: [],
-    patrolboat: [],
-  });
-});
-
-test("positionBoats - 3. Carrier-horizontal: positionBoats correctly modifies occupiedList", () => {
-  let game1 = boardFactory();
-  game1.positionBoats("carrier", [0, 0], "horizontal");
-  expect(game1.occupiedList).toEqual({
-    carrier: [
-      [0, 0],
-      [1, 0],
-      [2, 0],
-      [3, 0],
-      [4, 0],
-    ],
-    battleship: [],
-    destroyer: [],
-    submarine: [],
-    patrolboat: [],
-  });
-});
-
-test("positionBoats - 4. Horizontal: positionBoats correctly modifies occupiedList", () => {
-  let game1 = boardFactory();
-  game1.positionBoats("battleship", [0, 0], "horizontal");
-  expect(game1.occupiedList).toEqual({
-    carrier: [],
-    battleship: [
-      [0, 0],
-      [1, 0],
-      [2, 0],
-      [3, 0],
-    ],
-    destroyer: [],
-    submarine: [],
-    patrolboat: [],
-  });
-});
-
-test("positionBoats - 5. Non-origin positioning - positionBoats correctly modifies occupiedList", () => {
-  let game1 = boardFactory();
-  game1.positionBoats("patrolboat", [4, 0], "horizontal");
-  expect(game1.occupiedList).toEqual({
-    carrier: [],
-    battleship: [],
-    destroyer: [],
-    submarine: [],
+test("giveBoatsAPosition - 2. horizontal: giveBoatsAPosition correctly modifies board.occupied", () => {
+  let board = boardFactory();
+  let patrolboat = shipYard("patrolboat", "horizontal");
+  board.giveBoatsAPosition(patrolboat, [0, 0]);
+  expect(board.fleet).toEqual({
+    carrier: [null, []],
+    battleship: [null, []],
+    destroyer: [null, []],
+    submarine: [null, []],
     patrolboat: [
-      [4, 0],
-      [5, 0],
-    ],
-  });
-  game1.positionBoats("battleship", [4, 4], "vertical");
-  expect(game1.occupiedList).toEqual({
-    carrier: [],
-    battleship: [
-      [4, 4],
-      [4, 5],
-      [4, 6],
-      [4, 7],
-    ],
-    destroyer: [],
-    submarine: [],
-    patrolboat: [
-      [4, 0],
-      [5, 0],
+      "horizontal",
+      [
+        [0, 0],
+        [1, 0],
+      ],
     ],
   });
 });
 
-test("positionBoats - 6. Valid coordinates - positionBoats won't accept coordinates off the plane", () => {
-  let game1 = boardFactory();
-  expect(game1.positionBoats("patrolboat", [11, 0], "horizontal")).toEqual([
+test("giveBoatsAPosition - 3. Valid coordinates - giveBoatsAPosition won't accept coordinates off the plane", () => {
+  let board = boardFactory();
+  let patrolboat = shipYard("patrolboat", "horizontal");
+  expect(board.giveBoatsAPosition(patrolboat, [11, 0])).toEqual([
     "Error: Off the map",
     false,
   ]);
 });
 
-test("positionBoats - 7. Can't overlap boats", () => {
-  let game1 = boardFactory();
-  game1.positionBoats("carrier", [0, 0], "horizontal");
-  expect(game1.positionBoats("patrolboat", [0, 0], "horizontal")).toEqual([
+test("giveBoatsAPosition - 4. Can't overlap boats horizontally", () => {
+  let board = boardFactory();
+  let carrier = shipYard("carrier", "horizontal");
+  let patrolboat = shipYard("patrolboat", "horizontal");
+  board.giveBoatsAPosition(carrier, [0, 0]);
+  expect(board.giveBoatsAPosition(patrolboat, [0, 0])).toEqual([
+    "Error: Overlapping boats",
+    true,
+  ]);
+});
+
+test("giveBoatsAPosition - 5. Can't overlap boats vertically", () => {
+  let board = boardFactory();
+  let carrier = shipYard("carrier", "vertical");
+  let patrolboat = shipYard("patrolboat", "vertical");
+  board.giveBoatsAPosition(carrier, [0, 0]);
+  expect(board.giveBoatsAPosition(patrolboat, [0, 0])).toEqual([
     "Error: Overlapping boats",
     true,
   ]);
 });
 
 test("recieveAttack - 1. recieveAttack correctly triggers hit() in occupied space's boat", () => {
-  let game1 = boardFactory();
-  game1.positionBoats("battleship", [0, 0], "horizontal");
-  let coord = game1.checkCoord([0, 0]);
-  expect(game1.recieveAttack(coord[0], coord[2])).toBe(true);
+  let board = boardFactory();
+  let battleship = shipYard("battleship", "horizontal");
+  board.giveBoatsAPosition(battleship, [0, 0]);
+  expect(board.recieveAttack([0, 0])).toBe(true);
 });
 
 test("recieveAttack - 2. Can't hit the same coords twice", () => {
-  let game1 = boardFactory();
-  game1.positionBoats("battleship", [0, 0], "horizontal");
+  let board = boardFactory();
+  let battleship = shipYard("battleship", "horizontal");
+  let carrier = shipYard("carrier", "horizontal");
+  board.giveBoatsAPosition(battleship, [0, 0]);
 
-  let coord = game1.checkCoord([0, 0]);
-  expect(game1.recieveAttack(coord[0], coord[2])).toBe(true);
-  expect(game1.recieveAttack(coord[0], coord[2])).toBe(false);
+  expect(board.recieveAttack([0, 0])).toBe(true);
+  expect(board.recieveAttack([0, 0])).toBe(false);
 
-  game1.positionBoats("carrier", [6, 6], "horizontal");
-  coord = game1.checkCoord([6, 6]);
-  expect(game1.recieveAttack(coord[0], coord[2])).toBe(true);
-  expect(game1.recieveAttack(coord[0], coord[2])).toBe(false);
+  board.giveBoatsAPosition(carrier, [6, 6]);
+
+  expect(board.recieveAttack([6, 6])).toBe(true);
+  expect(board.recieveAttack([6, 6])).toBe(false);
 });
 
 test("recieveAttack - 3. Trying to hit the same position twice returns false", () => {
-  let game1 = boardFactory();
-  game1.positionBoats("battleship", [6, 6], "horizontal");
-  let coord = game1.checkCoord([6, 6]);
-  expect(game1.recieveAttack(coord[0], coord[2])).toBe(true);
-  expect(game1.recieveAttack(coord[0], coord[2])).toBe(false);
+  let board = boardFactory();
+  let battleship = shipYard("battleship", "horizontal");
+  board.giveBoatsAPosition(battleship, [6, 6]);
+  expect(board.recieveAttack([6, 6])).toBe(true);
+  expect(board.recieveAttack([6, 6])).toBe(false);
 });
 
 test("recieveAttack - 4. CAN hit the same boat more than once", () => {
-  let game6 = boardFactory();
-  game6.positionBoats("battleship", [0, 0], "horizontal");
-  let coord = game6.checkCoord([0, 0]);
-  expect(game6.recieveAttack(coord[0], coord[2])).toBe(true);
-  coord = game6.checkCoord([1, 0]);
-  expect(game6.recieveAttack(coord[0], coord[2])).toBe(true);
-});
+  let board = boardFactory();
+  let battleship = shipYard("battleship", "horizontal");
+  board.giveBoatsAPosition(battleship, [0, 0]);
 
-test("Declares when a boat has been sunk", () => {
-  let game = boardFactory();
-  game.positionBoats("battleship", [0, 0], "horizontal");
-  game.positionBoats("carrier", [6, 6], "vertical");
-  let coord = game.checkCoord([0, 0]);
-  game.recieveAttack(coord[0], coord[2]);
-  coord = game.checkCoord([1, 0]);
-  game.recieveAttack(coord[0], coord[2]);
-  coord = game.checkCoord([2, 0]);
-  game.recieveAttack(coord[0], coord[2]);
-  coord = game.checkCoord([3, 0]);
-  game.recieveAttack(coord[0], coord[2]);
-  expect(game.hpCheck("battleship")).toBe(true);
-  expect(game.hpCheck("carrier")).toBe(false);
+  expect(board.recieveAttack([0, 0])).toBe(true);
+
+  expect(board.recieveAttack([1, 0])).toBe(true);
 });
 
 test("missList - Logs missed coords", () => {
-  let game = boardFactory();
-  game.positionBoats("battleship", [0, 0], "horizontal");
-  game.recieveAttack([6, 6], "battleship");
-  expect(game.missList).toEqual([[6, 6]]);
-  game.recieveAttack([7, 7], "battleship");
-  expect(game.missList).toEqual([
+  let board = boardFactory();
+  let battleship = shipYard("battleship", "horizontal");
+
+  board.giveBoatsAPosition(battleship, [0, 0]);
+  board.recieveAttack([6, 6], "battleship");
+  expect(board.missList).toEqual([[6, 6]]);
+  board.recieveAttack([7, 7], "battleship");
+  expect(board.missList).toEqual([
     [6, 6],
     [7, 7],
   ]);
 });
 
-test("checkCoord - 1. Returns model of occupied space", () => {
-  let game = boardFactory();
-  game.positionBoats("patrolboat", [4, 4], "vertical");
-  expect(game.checkCoord([4, 4])).toEqual([[4, 4], true, "patrolboat"]);
-});
-
-test("checkCoord - 2. Returns model of occupied space", () => {
-  let game = boardFactory();
-  game.positionBoats("submarine", [7, 6], "horizontal");
-  expect(game.checkCoord([8, 6])).toEqual([[8, 6], true, "submarine"]);
-});
-
 test("gameBoard.boardStatus()- Can report when all ships are sunk", () => {
-  let game = boardFactory();
+  let board = boardFactory();
+  let patrolboat = shipYard("patrolboat", "horizontal");
 
-  expect(game.boardStatus()).toBe(true);
+  board.giveBoatsAPosition(patrolboat, [5, 5]);
+  board.recieveAttack([5, 5]);
 
-  game.positionBoats("patrolboat", [5, 5], "horizontal");
-  let coord = game.checkCoord([5, 5]);
-  game.recieveAttack(coord[0], coord[2]);
+  expect(board.boardStatus()).toBe(false);
+  board.recieveAttack([6, 5]);
 
-  expect(game.boardStatus()).toBe(false);
-  coord = game.checkCoord([6, 5]);
-  game.recieveAttack(coord[0], coord[2]);
+  expect(board.boardStatus()).toBe(true);
+});
 
-  expect(game.boardStatus()).toBe(true);
+test("Can tell if a coordinate is occupied", () => {
+  let board = boardFactory();
+  let patrolboat = shipYard("patrolboat", "horizontal");
+
+  board.giveBoatsAPosition(patrolboat, [0, 0]);
+
+  expect(board.checkIfCoordIsOccupied([0, 0])[1]).toBe(true);
+  expect(board.checkIfCoordIsOccupied([9, 9])[1]).toBe(false);
+});
+
+test("Grid has correct positions", () => {
+  let board = boardFactory();
+  // first make a ship
+  let patrolboat = shipYard("patrolboat", "vertical");
+  let carrier = shipYard("carrier", "horizontal");
+  // Then use the object to give a position
+  board.giveBoatsAPosition(patrolboat, [8, 8]);
+  board.giveBoatsAPosition(carrier, [1, 1]);
+  // Then use the board's fleet and the object to put into grid
+  board.putBoatsOnGrid(board.fleet, patrolboat);
+  board.putBoatsOnGrid(board.fleet, carrier);
+
+  const consoleSpy = jest.spyOn(console, "table");
+  console.table(board.grid);
+
+  expect(consoleSpy).toHaveBeenCalledWith(board.grid);
 });

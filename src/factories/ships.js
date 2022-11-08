@@ -1,18 +1,8 @@
-function Ship(model, orientation, bow) {
+function Ship(model, orientation) {
   this.model = model;
   this.orientation = orientation;
-  this.bow = bow;
   this.status = "afloat";
-
-  this.hit = function hit(strike = 1) {
-    this.hp -= strike;
-    if (this.hp <= 0) {
-      this.isSunk();
-    }
-  };
-  this.isSunk = function isSunk() {
-    this.status = "sunk";
-  };
+  this.position = [];
 
   switch (model) {
     case "carrier":
@@ -31,10 +21,22 @@ function Ship(model, orientation, bow) {
       this.hp = 2;
       break;
   }
+
+  this.hit = function hit() {
+    this.hp--;
+    if (this.hp <= 0) {
+      this.status = "sunk";
+      return `You sunk a ${model}`;
+    }
+  };
+
+  this.isSunk = function isSunk() {
+    this.status == "sunk" ? true : false;
+  };
 }
 
-function shipYard(model, orientation, bow) {
-  return new Ship(model, orientation, bow);
+function shipYard(model, orientation) {
+  return new Ship(model, orientation);
 }
 
 export default shipYard;

@@ -30,6 +30,7 @@
   "main": "webpack.config.js",
   "description": "",
   "dependencies": {
+    "headflip": "^1.0.2",
     "jquery": "^3.6.1"
   }
 }

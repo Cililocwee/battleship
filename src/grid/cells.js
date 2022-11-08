@@ -1,13 +1,13 @@
-const tools = (() => {
+const cellFunction = (() => {
   // nodelist
-  function colorBoard(boat) {
+  function updateDOMToShowPlayerBoats(boat) {
     const playerboxes = document.querySelectorAll("#playergrid .box");
 
     for (let i = 0; i < playerboxes.length; i++) {
       let splitCoords = playerboxes[i].id.split("-");
       let formattedCoords = splitCoords.join(",");
-      for (let j = 0; j < 5; j++) {
-        if (formattedCoords == JSON.stringify(boat[j])) {
+      for (let h = 0; h < boat.position.length; h++) {
+        if (JSON.stringify(boat.position).indexOf(formattedCoords) != -1) {
           occupy(playerboxes[i]);
         }
       }
@@ -15,11 +15,16 @@ const tools = (() => {
   }
 
   function getShipType() {
-    return document.getElementById("ships").value;
+    let shiptype = document.getElementById("ships").value;
+    if (shiptype != "select") {
+      return shiptype;
+    }
   }
 
   function getCoordinates() {
-    return JSON.parse(document.getElementById("bowcoords").innerHTML);
+    let list = document.getElementsByClassName("selected");
+    let stringedId = list[0].id.split("-").join(",");
+    return JSON.parse(stringedId);
   }
 
   function getOrientation() {
@@ -30,15 +35,17 @@ const tools = (() => {
     targetnode.classList.add("occupiedalive");
   }
 
-  function hit(targetnode) {
-    targetnode.classList.add("occupiedhit");
-  }
-
   function sink(targetnode) {
     targetnode.classList.add("occupiedsunk");
   }
 
-  return { colorBoard, getShipType, getCoordinates, getOrientation, occupy };
+  return {
+    updateDOMToShowPlayerBoats,
+    getShipType,
+    getCoordinates,
+    getOrientation,
+    occupy,
+  };
 })();
 
-export default tools;
+export default cellFunction;
