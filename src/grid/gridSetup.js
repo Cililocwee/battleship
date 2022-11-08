@@ -115,14 +115,14 @@ const gridSetup = (function () {
 
           if (gameloop.computerBoard.boardStatus()) {
             alert(
-              "Congratulations! You win! You may continue firing into the abyss or reset and play again."
+              "Congratulations! You win! All of the computer's ships are eliminated!"
             );
+            document.getElementById("enemygrid").classList.add("inert");
           }
 
           if (gameloop.playerBoard.boardStatus()) {
-            alert(
-              "Game Over - COMPUTER Wins. You may continue firing into the abyss or reset and play again."
-            );
+            alert("Game Over - COMPUTER Wins. Click reset and try again.");
+            document.getElementById("enemygrid").classList.add("inert");
           }
         });
       }
