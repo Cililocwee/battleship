@@ -15,13 +15,15 @@ const cellFunction = (() => {
   }
 
   function getShipType() {
-    return document.getElementById("ships").value;
+    let shiptype = document.getElementById("ships").value;
+    if (shiptype != "select") {
+      return shiptype;
+    }
   }
 
   function getCoordinates() {
     let list = document.getElementsByClassName("selected");
     let stringedId = list[0].id.split("-").join(",");
-    console.log(stringedId);
     return JSON.parse(stringedId);
   }
 
@@ -31,10 +33,6 @@ const cellFunction = (() => {
 
   function occupy(targetnode) {
     targetnode.classList.add("occupiedalive");
-  }
-
-  function hit(targetnode) {
-    targetnode.classList.add("occupiedhit");
   }
 
   function sink(targetnode) {

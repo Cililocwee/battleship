@@ -81,101 +81,6 @@ function Board() {
     }
   };
 
-  // pass in an object (model, bow, orientation)
-  // this.giveBoatsAPosition = function (ship, bow) {
-  //   let coords = [];
-  //   let size = ship.hp;
-  //   let errorFlag = false;
-
-  //   // if vertical, increments the y coord
-  //   if (ship.orientation === "vertical") {
-  //     // Check if boat would go off map
-  //     if (bow[1] + size > 12) {
-  //       errorFlag = true;
-  //       return "Out of range";
-  //     }
-
-  //     // Check if boat will overlap
-  //     for (let i = 0; i < size; i++) {
-  //       // boats shouldn't overlap vertically
-  //       if (this.checkIfCoordIsOccupied([bow[0], bow[1] + i])) {
-  //         errorFlag = true;
-  //         return "Overlap";
-  //       }
-
-  //       // push the created coords to array
-  //       coords.push([bow[0], bow[1] + i]);
-  //     }
-  //   }
-  //   // if horizontal, increments the x coord
-  //   if (ship.orientation === "horizontal") {
-  //     // boat goes off the map
-  //     if (bow[0] + size > 12) {
-  //       errorFlag = true;
-  //       return "Out of range";
-  //     }
-  //     for (let i = 0; i < size; i++) {
-  //       // boats shouldn't overlap horizontally
-  //       if (this.checkIfCoordIsOccupied(bow[0] + i, bow[1])) {
-  //         errorFlag = true;
-  //         return "Overlap";
-  //       }
-  //       // push the created coords to array
-  //       coords.push([bow[0] + i, bow[1]]);
-  //     }
-  //   }
-  //   if (!errorFlag) {
-  //     // this.occupiedList[model] = coords;
-  //     switch (ship.model) {
-  //       case "carrier":
-  //         this.fleet[ship.model][1].push(...coords);
-  //         this.fleet[ship.model][0] = ship.orientation;
-  //         this.occupy();
-  //         break;
-  //       case "battleship":
-  //         this.fleet[ship.model][1].push(...coords);
-  //         this.fleet[ship.model][0] = ship.orientation;
-  //         this.occupy();
-  //         break;
-  //       case "destroyer":
-  //         this.fleet[ship.model][1].push(...coords);
-  //         this.fleet[ship.model][0] = ship.orientation;
-  //         this.occupy();
-  //         break;
-  //       case "submarine":
-  //         this.fleet[ship.model][1].push(...coords);
-  //         this.fleet[ship.model][0] = ship.orientation;
-  //         this.occupy();
-  //         break;
-  //       case "patrolboat":
-  //         this.fleet[ship.model][1].push(...coords);
-  //         this.fleet[ship.model][0] = ship.orientation;
-  //         this.occupy();
-  //         break;
-  //     }
-  //   } else {
-  //     // this.occupiedList[model] = [];
-  //     switch (ship.model) {
-  //       case "carrier":
-  //         this.fleet[ship.model][1] = [];
-  //         break;
-  //       case "battleship":
-  //         this.fleet[ship.model][1] = [];
-  //         break;
-  //       case "destroyer":
-  //         this.fleet[ship.model][1] = [];
-  //         break;
-  //       case "submarine":
-  //         this.fleet[ship.model][1] = [];
-  //         break;
-  //       case "patrolboat":
-  //         this.fleet[ship.model][1] = [];
-  //         break;
-  //     }
-  //     return false;
-  //   }
-  // };
-
   this.putBoatsOnGrid = function (fleet, ship) {
     for (let i = 0; i < ship.hp; i++) {
       this.grid[fleet[ship.model][1][i][0]][fleet[ship.model][1][i][1]] =
@@ -194,9 +99,6 @@ function Board() {
       return [coords, false];
     }
   };
-
-  /* On call, the result of checkIfCoordIsOccupied should be assigned to a variable
-  and used for recieveAttack */
 
   this.recieveAttack = function (coords) {
     let coordJSON = JSON.stringify(coords);
@@ -226,15 +128,20 @@ function Board() {
 
   // TODO Works in testing, not in implementation
   this.boardStatus = function () {
-    if (this.hitList.length == this.occupied.length) {
+    if (this.hitList.length === 17) {
       // GAME OVER
       console.log("Game Over");
       return true;
     } else {
       // CONTINUE
-      console.log("Continue");
       return false;
     }
+  };
+
+  this.resetBoard = function () {
+    this.occupied = [];
+    this.hitList = [];
+    this.missList = [];
   };
 }
 

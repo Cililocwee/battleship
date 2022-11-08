@@ -1,9 +1,6 @@
 import boardFactory from "./factories/gameBoards";
 import shipYard from "./factories/ships";
 
-// ! Falling into the same issue again, relying on DOM instead of playerboard.grid/hitlist/occupied/misslist
-// ! Update the DOM based on whats going on in the game
-// ! Don't use the DOM to make logic choices
 const gameloop = (() => {
   // initiating game
 
@@ -53,19 +50,11 @@ const gameloop = (() => {
     computerBoard.putBoatsOnGrid(computerBoard.fleet, destroyer);
     computerBoard.putBoatsOnGrid(computerBoard.fleet, submarine);
     computerBoard.putBoatsOnGrid(computerBoard.fleet, patrolboat);
-
-    console.table(computerBoard.grid);
   }
 
-  /*
-  1. Put enemy boats on the map
-  TODO Close off player entry of ships
-   */
   function startGame() {
     plotEnemyBoats();
   }
-
-  // TODO Make computer fire at player after player fires
 
   // * Updates misslist, hitlist, dynamically chooses boxes without hit or miss
   function computerFiresAShot() {
@@ -86,12 +75,54 @@ const gameloop = (() => {
       );
     }
   }
+
+  function reinitializeGame() {
+    const shipSelection = document.getElementById("ships");
+    shipSelection.replaceChildren();
+    const carrier = document.createElement("option");
+    carrier.value = "carrier";
+    carrier.innerHTML = "Carrier";
+    shipSelection.add(carrier);
+
+    const battleship = document.createElement("option");
+    battleship.value = "battleship";
+    battleship.innerHTML = "Battleship";
+    shipSelection.add(battleship);
+
+    const destroyer = document.createElement("option");
+    destroyer.value = "destroyer";
+    destroyer.innerHTML = "Destroyer";
+    shipSelection.add(destroyer);
+
+    const submarine = document.createElement("option");
+    submarine.value = "submarine";
+    submarine.innerHTML = "Submarine";
+    shipSelection.add(submarine);
+
+    const patrolboat = document.createElement("option");
+    patrolboat.value = "patrolboat";
+    patrolboat.innerHTML = "Patrolboat";
+    shipSelection.add(patrolboat);
+
+    const select = document.createElement("option");
+    select.value = "select";
+    select.innerHTML = "---";
+    shipSelection.add(select);
+
+    playerBoard.resetBoard();
+    computerBoard.resetBoard();
+
+    for (const box of document.querySelectorAll(".box")) {
+      box.className = "box";
+    }
+  }
   return {
     playerBoard,
     computerBoard,
     startGame,
     randomcoords,
     computerFiresAShot,
+    reinitializeGame,
   };
 })();
 

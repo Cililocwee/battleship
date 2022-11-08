@@ -14,36 +14,38 @@ const playerboard = gameloop.playerBoard;
 
 // variables for later use in setting up the game
 const startBtn = document.getElementById("start");
-const grid = document.getElementById("enemygrid");
-const labelTop = document.getElementById("enemylabeltop");
-const labelLeft = document.getElementById("enemylabelleft");
+const resetBtn = document.getElementById("reset");
+const submitBtn = document.getElementById("submit");
+
+// const shipSelection = document.getElementById("ships");
 
 // Functionality for the Start Button (also resets a game in progress)
-// TODO change text (Start Game) to Reset Game after initialization
-// TODO make player grid reset on click too
 startBtn.addEventListener("click", () => {
-  grid.replaceChildren();
-  labelTop.replaceChildren();
-  labelLeft.replaceChildren();
+  // can't start the game until the player's board is set up
+  if (playerboard.occupied.length === 17) {
+    document.getElementById("enemygrid").replaceChildren();
+    document.getElementById("enemylabeltop").replaceChildren();
+    document.getElementById("enemylabelleft").replaceChildren();
 
-  gridSetup.makeEnemyBoard();
-  gameloop.startGame();
+    gridSetup.makeEnemyBoard();
+    gameloop.startGame();
 
-  // Enemy cells can be hit or missed
-  gridSetup.activateEnemyCells();
-  let computerBoxes = document.querySelectorAll("#enemygrid .box");
-  gridSetup.plotComputerBoatsToGrid(computerBoxes, enemyboard);
-  console.log(enemyboard.fleet);
+    // Enemy cells can be hit or missed
+    let computerBoxes = document.querySelectorAll("#enemygrid .box");
+
+    gridSetup.activateEnemyCells();
+    gridSetup.plotComputerBoatsToGrid(computerBoxes, enemyboard);
+    startBtn.classList.add("inert");
+    resetBtn.classList.remove("inert");
+  }
 });
-
-// Functionality to submit button
-const submitBtn = document.getElementById("submit");
-const shipSelection = document.getElementById("ships");
 
 // Functionality for the submit button
 submitBtn.addEventListener("click", () => {
   let shiptype = cellFunction.getShipType();
   let orientinput = cellFunction.getOrientation();
+  const shipSelection = document.getElementById("ships");
+
   // let coordinput = cellFunction.getCoordinates();
 
   switch (shiptype) {
@@ -95,5 +97,17 @@ submitBtn.addEventListener("click", () => {
   }
 
   // removes ships from list
-  shipSelection[shipSelection.selectedIndex].remove();
+  if (shiptype) {
+    shipSelection[shipSelection.selectedIndex].remove();
+  }
+});
+
+resetBtn.addEventListener("click", () => {
+  document.getElementById("enemygrid").replaceChildren();
+  document.getElementById("enemylabeltop").replaceChildren();
+  document.getElementById("enemylabelleft").replaceChildren();
+
+  gameloop.reinitializeGame();
+  startBtn.classList.remove("inert");
+  resetBtn.classList.add("inert");
 });

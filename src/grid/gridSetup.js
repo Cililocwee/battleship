@@ -111,12 +111,19 @@ const gridSetup = (function () {
             );
             box.classList.add("miss");
           }
-          // debugging - follow the progress
-          console.log(gameloop.computerBoard);
           gameloop.computerFiresAShot();
 
-          // TODO needs to accurately show if game is over, currently not working right
-          gameloop.computerBoard.boardStatus();
+          if (gameloop.computerBoard.boardStatus()) {
+            alert(
+              "Congratulations! You win! You may continue firing into the abyss or reset and play again."
+            );
+          }
+
+          if (gameloop.playerBoard.boardStatus()) {
+            alert(
+              "Game Over - COMPUTER Wins. You may continue firing into the abyss or reset and play again."
+            );
+          }
         });
       }
 
@@ -182,8 +189,6 @@ const gridSetup = (function () {
   function plotComputerBoatsToGrid(nodelist, board) {
     for (let i = 0; i < board.occupied.length; i++) {
       for (let j = 0; j < nodelist.length; j++) {
-        // console.log(coordsToId(board.occupied[i]));
-        // console.log(nodelist[j].id);
         if (
           JSON.stringify(board.occupied[i]) ===
           nodelist[j].id.split("-").join(",")
@@ -212,16 +217,6 @@ const gridSetup = (function () {
     for (let h = 0; h < idlookup.length; h++) {
       document.getElementById(idlookup[h]).classList.add("enemyoccupied");
     }
-  }
-
-  // ! Currently unimplemented
-  // displays coords on page (when player selecting where to put ship)
-  function showCoords() {
-    let splitCoords = this.id.split("-");
-    let formattedCoords = splitCoords.join(", ");
-    console.log(formattedCoords);
-    document.getElementById("bowcoords").innerText = formattedCoords;
-    return formattedCoords;
   }
 
   return {
