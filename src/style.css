@@ -29,6 +29,7 @@ h1 {
   display: flex;
   justify-content: center;
 }
+
 .box {
   height: 20px;
   width: 20px;
@@ -83,12 +84,6 @@ h1 {
 .occupiedhit {
   background-color: var(--hit);
   background: url("../dist/hit.svg");
-  background-size: contain;
-}
-
-.occupiedsunk {
-  background-color: var(--font-on-background);
-  background: url("../dist/skull.svg");
   background-size: contain;
 }
 
